@@ -1,0 +1,3055 @@
+2015/10/01開發紀錄
+A.查詢文獻:
+	http://hhyeh.blogspot.tw/2012/04/cccdll.html
+	http://acmors741.blogspot.tw/2013/05/cc-dllvs2010-opencv24.html
+	http://swaywang.blogspot.tw/2012/11/ccnative-dlls-pinvoke.html
+	https://social.msdn.microsoft.com/Forums/zh-TW/bc814c75-17e5-428e-b6ae-286b34853308/c-struct-in-c?forum=233
+
+	C#  Unmanaged 簽章是否相符
+	呼叫已使堆疊失去平衡
+	https://social.msdn.microsoft.com/Forums/zh-TW/f7089c7b-219f-41f4-9ac1-4ca724a39799/-pinvokestackimbalance?forum=233
+	http://vaio898989.pixnet.net/blog/post/50810845-c%23%E7%9A%84dllimport-attribute(%E4%B8%80)-calling-convention
+	////////////////
+	VC 2010 BUG 修正
+	https://xiaolaba.wordpress.com/2013/09/01/link-fatal-error-lnk1123-%E8%BD%89%E6%8F%9B%E6%88%90-coff-%E6%99%82%E5%A4%B1%E6%95%97-%E6%AA%94%E6%A1%88%E7%84%A1%E6%95%88%E6%88%96%E6%90%8D%E6%AF%80/
+
+	visual c++ express dll project[建立和使用動態連結程式庫 (C++)]
+	https://msdn.microsoft.com/zh-tw/library/ms235636.aspx
+-----------------------------------------
+B.寫的測試程式
+	01.DynamicLibrary:純C的DLL專案+呼叫DLL專案
+	02.CS_test:測試可以撰寫CS的GUI
+	03.CPP_Console:確定可以寫純C的CONSOLE
+	04.c_MathFuncsDll:純C的DLL
+	05.Console_CS_CallDLL:CS在CONSOLE模式下呼叫c_MathFuncsDll
+
+/////////////////////////////////////////////////////////////////////
+2015/10/01開發紀錄(晚上 9:00)
+A.查詢文獻:
+	c# call c++ dll byte array
+		https://social.msdn.microsoft.com/Forums/en-US/32f1a857-91d6-472d-b333-469ed7f6f6dd/passing-a-byte-array-to-a-c-dll-from-c?forum=csharplanguage
+		
+	c# call c++ dll struct
+		http://bbs.csdn.net/topics/250078149
+		http://www.cnblogs.com/yukaizhao/archive/2011/04/27/csharp_call_cpp_class_struct.html
+		https://social.msdn.microsoft.com/Forums/zh-TW/bc814c75-17e5-428e-b6ae-286b34853308/c-struct-in-c?forum=233
+		http://falldog7.blogspot.tw/2015/01/c-sharp-allocate-structure-buffer-array-dll.html
+		
+		http://www.dreamincode.net/forums/topic/217549-returning-structure-from-dll-to-c%23/	
+		
+		http://cc-young.blogspot.tw/2012/08/c-cc-dll.html
+	http://www.dotblogs.com.tw/merlin/archive/2012/07/17/73424.aspx
+	
+/////////////////////////////////////////////////////////////////////
+2015/10/02開發紀錄
+A.修改的測試程式
+	01.CPP_Console:確定可以寫純C的CONSOLE
+		[System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential)]
+		public struct Bar
+		{
+
+			/// int
+			public int id;
+
+			/// char*
+			[System.Runtime.InteropServices.MarshalAsAttribute(System.Runtime.InteropServices.UnmanagedType.LPStr)]
+			public string name;
+		}
+
+		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+		public struct Data
+		{
+			public bool bData;
+			public int nData;
+			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
+			public string strData;
+		}
+        [DllImport("./c_MathFuncsDll.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "Test_AllocData")]
+        public static extern void Test_AllocData(int size, ref IntPtr ptr);
+        [DllImport("./c_MathFuncsDll.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi, EntryPoint = "Test_FreeData")]
+        public static extern void Test_FreeData(IntPtr ptr);
+        [DllImport("./c_MathFuncsDll.dll", CallingConvention = CallingConvention.Cdecl,CharSet=CharSet.Ansi, EntryPoint = "GetBar")]
+        extern static void GetBar(ref Bar bar);
+        [DllImport("./c_MathFuncsDll.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "SaveByteArray")]
+        static extern Int32 SaveByteArray(IntPtr pArray, int nSize);		
+	02.c_MathFuncsDll:純C的DLL
+		typedef struct _Data
+		{
+		 bool bData;
+		 int nData;
+		 char strData[256];
+		} Data;
+
+		struct Bar
+		{
+			public :
+				int id;
+				char* name;
+		};
+		extern "C"{
+		  __declspec(dllexport) int Test_AllocData(int count, Data*& res);
+		  __declspec(dllexport) int Test_FreeData(Data* d);
+		  __declspec(dllexport) int GetBar(Bar& bar);
+		  __declspec(dllexport) int SaveByteArray(BYTE * pArray, int nSize);
+	
+/////////////////////////////////////////////////////////////////////
+2015/10/05開發紀錄
+A.修改的測試程式
+	01.VC_syris_test:已經可以在自己的環境編譯-內容是富元大大版GRDxControl的測試程式
+	02.SYRIS_Project:已經可以抓到CardReader
+
+/////////////////////////////////////////////////////////////////////
+2015/10/06開發紀錄
+A.修改的測試程式
+	01.SYRIS_Project:已經可以Beep、Operate、close、finish
+
+/////////////////////////////////////////////////////////////////////
+2015/10/07開發紀錄
+A.修改的測試程式
+	01.SYRIS_Project:已經可以readStateCardReader、readCarUID、waitResponse
+
+/////////////////////////////////////////////////////////////////////
+2015/10/08開發紀錄
+A.修改的測試程式
+	01.SYRIS_Project:已經可以readCareInfo、writeCareInfo
+
+/////////////////////////////////////////////////////////////////////
+2015/10/12開發紀錄
+A.整理API動作筆記
+
+B.修改程式
+	01.到CodeProject下載UI元件-DatePicker
+	02.建立GUI程式(SYRIS_WCARD):基本排版完成
+
+/////////////////////////////////////////////////////////////////////
+2015/10/13開發紀錄
+A.修改程式
+	01.SYRIS_Project:修正API和測試程式
+	02.GUI程式(SYRIS_WCARD):可以偵測和OPEN卡機
+
+/////////////////////////////////////////////////////////////////////
+2015/10/14開發紀錄
+A.修改程式
+	01.SYRIS_Project:修正API和測試程式
+
+/////////////////////////////////////////////////////////////////////
+2015/10/15開發紀錄
+A.修改程式
+	01.SYRIS_Project:修正API和測試程式
+	02.GUI程式(SYRIS_WCARD):可以讀卡並把資訊和GUI整合(剩下門禁時間區段還沒完成)
+
+/////////////////////////////////////////////////////////////////////
+2015/10/16開發紀錄
+A.修改程式
+	01.撰寫列印字串分析測試程式
+
+/////////////////////////////////////////////////////////////////////
+2015/10/19開發紀錄
+A.修改程式
+	01.SYRIS_Project:加上列印字串分析功能
+
+/////////////////////////////////////////////////////////////////////
+2015/10/20開發紀錄
+A.修改程式
+	01.SYRIS_Project:加上多國語系
+	02.CS_UsingPanelsMoveObject(模擬HTML DIV功能動態增加元素)
+	03.CS_Copy_Panels_Main(Panel可重疊，Panel可以從別的專案剪下貼上過來)
+
+/////////////////////////////////////////////////////////////////////
+2015/10/21開發紀錄
+A.修改程式
+	01.CS_MultiplePanels(完成7個Panel)
+
+/////////////////////////////////////////////////////////////////////
+2015/10/22開發紀錄
+A.修改程式
+	01.SYRIS_Project:加上多國語系可UI選擇、UI可以動態改變Panel
+
+/////////////////////////////////////////////////////////////////////
+2015/10/26開發紀錄
+A.修改程式
+	01.SYRIS_Project:加上多國語系紀錄上一次選擇的結果
+
+/////////////////////////////////////////////////////////////////////
+2015/10/27開發紀錄
+A.修改程式
+	01.SYRIS_Project:加上程式偵測讀卡機超過一分鐘自動關閉程式
+
+/////////////////////////////////////////////////////////////////////
+2015/10/28開發紀錄
+A.修改程式
+	01.SYRIS_Project:單獨修改日期選擇元件語系，但是無法和UI連動
+
+/////////////////////////////////////////////////////////////////////
+2015/10/29開發紀錄
+A.修改程式
+	01.SYRIS_Project:修改日期選擇元件讀取XML達到和UI連動語系改變
+	02.SYRIS_Project:DLL部分改成使用MFC靜態連結庫，防止DLL相攜性問題
+
+/////////////////////////////////////////////////////////////////////
+2015/10/29開發紀錄
+A.工具尋找與使用學習
+	Dependency Walker(現在放在WINDOWS SDK中，基本用法如自製圖片所示)
+	win-ldd(資料來源 https://code.google.com/p/win-ldd/)
+
+/////////////////////////////////////////////////////////////////////
+2015/11/02開發紀錄
+A.修改程式
+	01.SYRIS_Project:修改日期選擇元件增加m_intLanguage屬性如此就可以取代讀取XML達到和UI連動語系改變方法
+
+/////////////////////////////////////////////////////////////////////
+2015/11/03開發紀錄
+A.測試ClickOne的安裝工具，發現無法在桌面建立捷徑
+B.找到Windows 下免費製作軟體安裝包工具介紹-nullsoft scriptable install systen(NSIS)
+
+/////////////////////////////////////////////////////////////////////
+2015/11/04開發紀錄
+A.製作出不檢查系統情況下直接裝.NET和程式，原本有.NET時完全正常的軟體安裝包
+
+/////////////////////////////////////////////////////////////////////
+2015/11/05開發紀錄
+A.修改程式
+	01.測試德國人的C#程式建立測試專案:Console_EasyPOD
+	02.C# DES加解密檔案程式測試:Console_CS_Encrypt_desDecrypt
+
+/////////////////////////////////////////////////////////////////////
+2015/11/06開發紀錄
+A.修改程式
+	01.讓C#程式以系統管理員身分執行(UAC):Console_CS_Admin
+	02.PostgreSQL 備份與還原(WINDOWS 指令)
+	03.純C的DES加解密
+
+/////////////////////////////////////////////////////////////////////
+2015/11/09開發紀錄
+A.修改程式
+	01.C#壓縮檔案
+		單一檔案壓縮(使用.NET4元件)
+		目錄壓縮(使用Ionic.Zip元件)
+	02.CB_MD5(純C MD5)
+	03.Console_CS_File_MD5(C# MD5)
+	04.C# 使用Process來達到呼叫、監聽、關閉外部程式等功能
+
+/////////////////////////////////////////////////////////////////////
+2015/11/10開發紀錄
+A.修改程式
+	01.SYWEB_DBBackup
+		完成備份初步功能
+
+/////////////////////////////////////////////////////////////////////
+2015/11/11開發紀錄
+A.修改程式
+	01.SYWEB_DBBackup
+		完成備份和還原所有基本功能
+		XML讀寫茶功能
+
+/////////////////////////////////////////////////////////////////////
+2015/11/12開發紀錄
+A.修改程式
+	01.SYWEB_DBBackup
+		版1_完成多國語系而且MessageBox有使用對應的圖和標題
+		版2_還原時前置動作檔案放在跟目錄下，另外實測之後把自動重啟功能拿掉
+
+/////////////////////////////////////////////////////////////////////
+2015/11/13開發紀錄
+A.修改程式
+	01.SYWEB_DBBackup
+		把刪BAT檔和刪log檔的指令拿掉(保留三個過程檔)
+		把執行BAT的狀態從隱藏變成一般畫面:ProcessWindowStyle.Normal
+	02.Windows C++文件打包工具實現(模擬tar):CB_createCAB
+	03.純C[可在WINDOWS和LINUX]條列純C[可在WINDOWS和LINUX]條列(搜尋)特定目錄下所有檔案包含子目錄特定目錄下所有檔案包含子目錄:CB_FileList
+
+/////////////////////////////////////////////////////////////////////
+2015/11/16~2015/11/17開發紀錄
+A.修改程式
+	01.SYWEB_DBBackup
+		點擊備份或還原時，都會出現以下視窗，並要求輸入密碼。(BUG修正)
+		無設定紀錄直接跳到設定畫面(BUG修正)
+		儲存連線資訊後，無提示訊息，需提示儲存成功或失敗(BUG修正)
+		改變還原流程(BUG修正)
+
+/////////////////////////////////////////////////////////////////////
+2015/11/17開發紀錄
+A.修改程式
+	01.SYWEB_DBBackup
+		新增DB沒初始化就不備份的防呆
+		新增DB沒初始化有可以還原的防呆
+		新增文字改變顏色等待動畫提示
+
+/////////////////////////////////////////////////////////////////////
+2015/11/18開發紀錄
+A.修改程式
+	01.SYWEB_DBBackup
+		將備份和還原變成thread化(如果是表單的成員就要加上static)
+
+/////////////////////////////////////////////////////////////////////
+2015/11/19開發紀錄
+A.修改程式
+	01.SYWEB_DBBackup
+		將備份和還原變成thread化(可中斷+還原有BUG)
+		將17號以後的版本換圖，並輸出17號的版本給倫哥
+
+/////////////////////////////////////////////////////////////////////
+2015/11/20開發紀錄
+A.找資料一無所獲(C#檔案打包)
+
+/////////////////////////////////////////////////////////////////////
+2015/11/23開發紀錄
+A.找資料一無所獲(C#檔案打包)
+
+/////////////////////////////////////////////////////////////////////
+2015/11/24開發紀錄
+A.製作SYWEB_DBBackup安裝檔
+	01.使用nullsoft scriptable install systen(NSIS)製作打包專案檔
+	02.在WIN7虛擬機器製作安裝檔
+	03.在有.NET和無.NET的虛擬機器下測試安裝OK
+B.CB_testCustomCAB
+	01.實作任裡兩個檔案合併與分開(自己實作檔案簡易打包)
+C.C++簡易打包DLL和C#測試
+	01.把CB_testCustomCAB函數變成DLL
+	02.建立測試的C#
+	
+/////////////////////////////////////////////////////////////////////
+2015/11/25開發紀錄
+A.修改程式
+	01.SYWEB_DBBackup
+		把ZIP功能換成自製CustomCAB，原因是ZIP元件會咬住檔案且忽然中斷會有報錯的機會
+		解壓縮函數包含原ZIP方法和CAB方法(為了相容舊版)
+		
+/////////////////////////////////////////////////////////////////////
+2015/11/26開發紀錄
+A.修改程式
+	01.SYWEB_DBBackup
+		修正還原到一半按下中斷要必須保證資料庫回復到會還原之前
+		
+/////////////////////////////////////////////////////////////////////
+2015/11/27開發紀錄
+A.修改程式
+	01.CustomCAB
+		把doUnCAB基本錯誤防呆加上
+
+/////////////////////////////////////////////////////////////////////
+2015/11/30開發紀錄
+A.撰寫NET4壓縮CustomCAB的結果測試，發現如果再加密之後進行壓縮則壓縮率極差
+	結論:如果要再將備份檔案備份檔案變小就是在製作CAB之前將檔案利用NET4壓縮進行壓縮
+
+/////////////////////////////////////////////////////////////////////
+2015/12/01開發紀錄
+A.修改程式
+	01.SYWEB_DBBackup
+		增加防呆(只有CAB沒有ZIP)
+		
+/////////////////////////////////////////////////////////////////////
+2015/12/02開發紀錄
+A.測試
+	C# 使用Process執行和關閉BAT
+B.修改程式
+	01.SYWEB_DBBackup
+		把Process執行和關閉BAT做修正
+
+/////////////////////////////////////////////////////////////////////
+2015/12/03開發紀錄
+A.找資料一無所獲(還原中斷之後系統會咬住在執行回員會出現錯誤想要找解法)
+
+/////////////////////////////////////////////////////////////////////
+2015/12/04~2015/12/07開發紀錄
+A.幫客戶撰寫EasyPOD讀取MultiTag範例
+
+/////////////////////////////////////////////////////////////////////
+2015/12/08開發紀錄
+A.測試
+	01.PHP CSV檔案讀寫
+	02.確定可以用wget來呼叫
+	03.MySQL2CSV.php(可以指定DB和TABLE將資料變成CSV)
+	04.CSV2MySQL.php(可以指定CSV將資料變成TABLE的內容)
+
+/////////////////////////////////////////////////////////////////////
+2015/12/09開發紀錄
+A.測試
+	01.PgSQL2CSV.php(可以指定DB和TABLE將資料變成CSV)
+	02.CSV2PgSQL.php(可以指定CSV將資料變成TABLE的內容)
+	03.MySQL_struct.php(MySQL內資料庫結構顯示)
+	
+/////////////////////////////////////////////////////////////////////
+2015/12/10開發紀錄
+A.測試
+	01.SQL Server 2012安裝
+		Windows 7 SP1
+		http://blog.kkbruce.net/2012/10/microsoft-sql-server-2012-express-donwload-and-install.html#.Vmjg9Ep96Uk
+		http://www.slideshare.net/yuan817/ms-sql-2012
+		https://www.dotblogs.com.tw/franma/2012/08/05/73837
+		http://web.synametrics.com/sqlexpressremote.htm
+	02.PHP_ODBC_MSSQL.PHP(透過PHP內建ODBC測試連接SQL Server 2012)
+	03.PHP_ODBC_MSSQL_SelectAll.PHP(PHP內建ODBC抓取SQL Server 2012內的資料)
+	
+/////////////////////////////////////////////////////////////////////
+2015/12/11開發紀錄
+A.測試
+	01.MsSQL2CSV.php(可以指定DB和TABLE將資料變成CSV)
+	02.CSV2MsSQL.php(可以指定CSV將資料變成TABLE的內容)
+	03.使用C語言一行一行連續讀檔將檔案字串存放到C++的vectorstring變數中，之後再依序從vector變數中將值取出並透過C的字元陣列顯示出來
+	04.純C++讀取清單列表進行檔案打包和解打包
+
+/////////////////////////////////////////////////////////////////////
+2015/12/14開發紀錄
+A.測試	
+	01.純C++讀取清單列表進行檔案打包和解打包(可CMD呼叫)
+	02.MySQL2TablesList.php(產生BAT&FILELIST)
+	03.MsSQL2TablesList.php(產生BAT&FILELIST，內建的資料表也會顯示)
+	04.PgSQL2TablesList.php(產生BAT&FILELIST)
+
+/////////////////////////////////////////////////////////////////////
+2015/12/15開發紀錄
+A.測試
+	01.SQL_Connect_test.php(三種資料庫連線測試)
+	02.cab_cmd(修正純C++讀取清單列表進行檔案打包和解打包-建立目錄可以多層、清單內只需要相對路徑檔名)
+	
+/////////////////////////////////////////////////////////////////////
+2015/12/16開發紀錄
+A.測試
+	01.	CS_Console_PHP_backup(已經可以正確透過wget呼叫PHP進行特定DB的TABLE備份並呼叫CB_CustomCAB.exe來執行打包CSV的工作)
+
+/////////////////////////////////////////////////////////////////////
+2015/12/17開發紀錄
+A.測試
+	01.先前(2015/11/17)發行的DB備份/還原程式為何在特定機器無法使用『還原』功能
+
+/////////////////////////////////////////////////////////////////////
+2015/12/18開發紀錄
+A.開發
+	01.修正2015/12/17發現的BUG，並把打包號的檔案給 億齡 了
+
+/////////////////////////////////////////////////////////////////////
+2015/12/21開發紀錄
+A.開發
+	01.撰寫不考慮資料庫版號的CMD還原程式(CS_Console_PHP_restore)
+	
+/////////////////////////////////////////////////////////////////////
+2015/12/22開發紀錄
+A.開發	
+	01.CS_Console_File_Search_Content(C#文字檔案內容搜尋)
+	02.撰寫考慮資料庫版號的CMD還原程式(CS_Console_PHP_restore)
+	
+/////////////////////////////////////////////////////////////////////
+2015/12/23開發紀錄
+A.開發
+	01.	CS_Console_PHP_backup(修改成可以整合到GUI中的變數命名方法)
+	02.	CS_Console_PHP_restore(修改成可以整合到GUI中的變數命名方法)
+	03. SYWEB_DBBackup(支援三種DB備份還原)
+	
+/////////////////////////////////////////////////////////////////////
+2015/12/24開發紀錄
+A.開發
+	01.修正PHP讓程式支援指定IP位置
+	02.修正SYWEB_DBBackup(支援指定IP)
+	03.SYWEB_DBBackup v4.nsi
+
+/////////////////////////////////////////////////////////////////////	
+2015/12/28開發紀錄
+A.開發
+	01.C# 利用PROCESS 開啟外部程式並且利用API控制縮小，最後再將開啟程式關閉(範例控制對象USBWebserver)
+	02.免費PHP進銷存套件(確定可以在USBWebserver執行基本登錄功能)
+	
+/////////////////////////////////////////////////////////////////////	
+2015/12/29開發紀錄
+A.開發
+	01.php Invoices(PHP使用者註冊登錄模組)
+	02.堆疊(先進後出) - 使用鏈結(Link)實作（C 語言動態記憶體宣告）
+	03.佇列(Queue)(先進先出) - 使用鏈結(Link)實作（C語言動態記憶體宣告）
+	
+/////////////////////////////////////////////////////////////////////	
+2015/12/30開發紀錄
+A.開發
+	01.把syweb.sql匯入USBWebserver的MySQL中發現只有23個表，發現目前V7版TABLE數量差距和V6(102個TABLE)版差距甚大，另外V7也有新增在V6上面沒有的例如auth_group
+	02.php Invoices(自己撰寫首頁CSS、導航(工具列)橫向階層選單、導航(工具列)直式階層選單)
+
+/////////////////////////////////////////////////////////////////////	
+2015/12/31開發紀錄
+A.開發
+	01.php Invoices(自己撰寫首頁CSS、導航(工具列)橫向階層選單、導航(工具列)直式階層選-(1)(2))	
+	02.MySQL_dump(使用MySQL工具執行備份)
+	03.使用unzip解壓縮zip
+	04.破解了Line的chrome版字體限制
+	
+2016/01/04開發紀錄
+A.開發
+	01.MySQL資料表關聯建立教學與實作
+	02.sqlcmd備份SQL Server Express(但是結果是二進位檔案)
+	
+2016/01/05開發紀錄
+A.開發
+	01.sqlcmd csv(雖然可用，但是要有SQL SERVER)
+	02.PHP分頁
+	03.利用php建立資料表
+	
+2016/01/06開發紀錄
+A.開發	
+	01.ms sql express dump
+	02.純C 主函數帶參數，將參數值複製到區域變數中(雙指標字串拷貝)
+	03.Android JAR製作
+	04.小廖-Job Description.xls
+	
+2016/01/07開發紀錄
+A.開發
+	01.invoices(20160107_00-客戶新增)
+	02.invoices(20160107_01-客戶新修查)
+	03.invoices(20160107_02-插入產品功能選單)
+	
+2016/01/08開發紀錄
+A.開發	
+	invoices(20160108-產品ALL)	
+
+2016/01/11開發紀錄
+A.開發		
+	CS_Console_MsSQL(顯示DB內所有資料表)
+	CS_Console_MySQL(顯示DB內所有資料表)
+	CS_Console_PgSQL(顯示DB內所有資料表)
+	CS_Console_MsSQL(顯示DB內所有資料表和資料表內的欄位名稱)
+	CS_Console_MySQL(顯示DB內所有資料表和資料表內的欄位名稱)
+	CS_Console_PgSQL(顯示DB內所有資料表和資料表內的欄位名稱)
+	
+2016/01/12開發紀錄
+A.開發		
+	CS_Console_MsSQL(DB內所有Table內容轉存成CSV檔)
+	CS_Console_MySQL(DB內所有Table內容轉存成CSV檔)
+	CS_Console_PgSQL(DB內所有Table內容轉存成CSV檔)
+	修正PHP當int是空值無法回寫的問題
+	
+2016/01/13開發紀錄
+A.開發
+	C#主函數(帶參數)
+	修正CSV2PgSQL_20161224
+	MsSQL、PgSQL、MySQL在PHP寫入資料時遇到空值的差異
+	MySQL 欄位塞入空值的語法
+	
+2016/01/14開發紀錄
+A.開發
+	讓NSIS支援zip檔案解壓縮
+	nsis 建立bat並執行
+
+2016/01/15開發紀錄
+A.開發
+	C#取的SQL資料表欄位型態
+
+2016/01/18開發紀錄
+A.開發
+	SYWEB_DBBackup(判斷安裝環境是否有公司的WEB環境，如果沒有啟動時戴上USBWEBSERVER，關閉程式時也將USBWEBSERVER關閉)	
+	
+2016/01/19開發紀錄
+A.開發
+	C# 透過修改註冊表(REG)設定開機啟動
+	C#表格(DataGridView)整合其他控制項範例
+	SYWEB_DBBackup修改抬頭
+	SYWEB_SYDServer基本UI框和richtextbox刪除一行(文字)
+	Unicode和URL編解碼網頁工具
+
+2016/01/20開發紀錄
+A.開發
+	C#表格(DataGridView)同一欄位整合不同元件+並且允許局部欄位可以修改
+	SYWEB_DBBackup把所有呼叫外部動作都縮小
+		打包(修改NSIS專案檔將安裝路徑寫死，因為USBWEBSERVER的設定檔要固定)
+	SYWEB_SYDServer基本UI框和richtextbox刪除一行(文字)寫入讀出文字檔
+	常用單位換算網頁
+	
+2016/01/21開發紀錄
+A.開發
+	C# richtextbox color範例
+	SYWEB_SYDServer(01UI元件名稱設定和基本版面設定)
+	SYWEB_SYDServer(02語系可以基本切換)
+	農曆轉換程式(文殊菩薩剃頭日)
+	
+2016/01/21開發紀錄
+A.開發
+	SYWEB_SYDServer(空檔案防呆、筆數檢查防呆，開機啟動)
+	免費的網頁(HTML5)播放器
+	
+2016/01/25開發紀錄
+A.開發
+	SYWEB_SYDServer(開機啟動從REG變成建立啟動捷徑，因為REG方案只能在無UAC權限下執行，但是要存取REG卻要UAC權限；刪除REG權限檔案)
+	C#利用程式建立本身捷徑放到啟動區達到開機啟動的功能所以可以不被UAC限制
+
+2016/01/26開發紀錄
+A.開發
+	SYWEB_SYDServer(修改設定自動啟動的提示訊息變成多國語言版)
+	自動列印與分頁列印_測試OK(會列印URL)
+	從Pixnet到Blogger的搬家步驟
+
+2016/01/27開發紀錄
+A.開發
+	SYWEB_SYDServer(抓取系統與係用來初始本身語系；存檔時讓使用者指定路徑，未指定就是放在桌面)	
+	自動列印(使用CSS分頁和JavaScript實現局部列印去除網址列)_測試OK
+	JS網頁局部列印去除網址列
+	JS圖片載入後觸發事件(可以用在確定網頁資料全部載入後執行動作)
+	JavaScript_Timer功能
+
+2016/01/28開發紀錄
+A.開發
+	SYWEB_SYDServer(抓取系統與係用來初始本身語系BUG修正)	
+	C#判斷系統語系的方法
+	
+2016/01/29開發紀錄
+A.開發
+	C#_替換_檔案內容
+	JAVA_替換_檔案內容
+	JS萬年曆
+	
+2016/02/01開發紀錄
+A.開發
+	CS_Console_AES
+	NSIS 判斷檔案是否存在(IfFileExists Changes Section Flags)
+
+2016/02/02開發紀錄
+A.開發
+	BCARD_資料
+	SYRIS_BCARD
+	SYRIS_C#表單基本設定
+
+2016/02/03開發紀錄
+A.開發
+	BCARD_資料
+	SYRIS_BCARD
+	C# 表單禁止(改變大小)縮放
+
+2016/02/04開發紀錄
+A.開發
+	20160204驗證
+	BCARD_資料
+	SYRIS_BCARD
+	Windows Vista之後備份檔案內建TOOL-Robocopy
+	有成功匯入的資料
+	利用JS自動瀏覽部落格增加點擊率
+	
+2016/02/15開發紀錄
+A.開發
+	SYRIS_BCARD
+	SYRIS_BCARD打包檔
+
+2016/02/16開發紀錄
+A.開發
+	SYRIS_B_WCard_Main
+	SYRIS_BCARD(多國語系)
+	SYRIS_BCARD打包檔
+	CS_Console_HttpPost(和SYDeviceLinker-Test-V0.8.6-2015081802對應測試)
+	cs https post(C# https文件)
+	
+2016/02/17開發紀錄
+A.開發
+	SYRIS_B_WCard_Main
+	SYRIS_BCARD(提示未輸入資料)
+	SYRIS_BCARD打包檔
+	CS_Forms_OnlyOne(C# 設定程式只能執行一次)
+	
+2016/02/18開發紀錄
+A.開發	
+	CS_Console_UTF8HEX2String(將純UTF8的16進制的字串轉回可顯示的文字)
+	CS_Console_login_logout_test(和羅哥的SERVER通訊可做登錄和渣LOG檔一次)
+	
+2016/02/19開發紀錄
+A.開發
+	SYWEB_SYDServer
+
+2016/02/22開發紀錄
+A.開發
+	SYWEB_SYDServer
+	
+2016/02/23開發紀錄
+A.開發
+	SYWEB_SYDServer	
+	
+2016/02/24開發紀錄
+A.開發
+	SYWEB_SYDServer
+
+2016/02/25開發紀錄
+A.開發
+	SYWEB_SYDServer
+
+2016/02/26開發紀錄
+A.開發
+	SYWEB_SYDServer
+
+2016/03/01_02開發紀錄
+A.開發
+	測試WIN7+SP1還是沒有.NET4.0
+	學會VS2010開發程式變成免安裝版
+
+2016/03/03開發紀錄
+A.開發
+	免安裝版
+		01.TOOL的MENU預設掃描完後將.NET的檔案選項刪除+系統的.NET(4.0.1)強制->170M會動
+		02.TOOL的MENU預設掃描完後將.NET的檔案選項不刪除->110M不會動
+		03.TOOL的MENU預設掃描完後將.NET的檔案選項不刪除+系統的.NET(4.0.1)強制->230M會動
+		結論(系統的.NET(4.0.1)強制才有用)
+	免安裝TOOL是靠程式的捷徑來判斷如何執行
+	
+2016/03/04開發紀錄
+A.開發	
+	CS_Forms_shortcut_net20(VS2010編譯.NET2的開機啟動捷徑功能)
+	YoutubeDownLoad.php(http://phpruntime.byethost5.com/index.php)-申請頁面https://byet.host/
+		Cpanel Username: b5_17551754
+		Cpanel Password: asd700502
+		Your URL: http://phpruntime.byethost5.com or http://www.phpruntime.byethost5.com
+		FTP Server : ftp.byethost5.com
+		FTP Login : b5_17551754
+		FTP Password : asd700502
+		MySQL Database Name: MUST CREATE IN CPANEL
+		MySQL Username : b5_17551754
+		MySQL Password : asd700502
+		MySQL Server: SEE THE CPANEL
+
+
+		Cpanel URL: http://cpanel.byethost5.com/
+
+2016/03/07開發紀錄
+A.開發
+	CS_Forms_shortcut_net20(設定多執行緒存取UI，防止SERVER GG 時UI會咬住)
+	YoutubeDownLoad.php(增加教學文字)
+	dotnetfx(xp_net20).exe(備份用)
+
+2016/03/08開發紀錄
+A.開發	
+	SYWEB_SYDServer_net20(調整UI更新程式邏輯加速系統反應速度，另外新增LOG機制編譯時決定是否開啟)
+
+2016/03/09開發紀錄
+A.開發
+	01.SYWEB_SYDServer_net20 [換成圖之前]
+	02.SYWEB_SYDServer_net20
+
+2016/03/10開發紀錄
+A.開發
+	SYWEB_SYDServer_net20(把顯示資料區的元件利用Anchor屬性變成填滿UI區域，達到跟著放大效果；另外把UI的放大功能打開；新增自動讀取控制器連線功能)
+	Joomla
+	打包加密工具
+	打包加密的輸出檔案
+
+
+2016/03/11開發紀錄
+A.開發
+	偽造SEO和點擊率的PHP程式原型
+	
+2016/03/14開發紀錄
+A.開發
+	命令列中執行完整WEB動作包含javascript(phantomjs)-下載完整HTML
+	
+
+2016/03/17開發紀錄
+A.開發
+	B_WCARD完整專案ALL(WCARD用舊版)
+		SYRIS_B_WCard_Main
+		SYRIS_BCARD
+		SYRIS_WCARD
+		SYRIS_B_WCARD打包
+	PHP4toEXE
+	PHP5toEXE
+	PHP程式碼加密
+	文字版瀏覽器
+	
+
+2016/03/18開發紀錄
+A.開發
+	利用JS呼叫PHP實現文字版網站瀏覽紀錄抓取(自製GA)
+	
+	
+2016/03/21開發紀錄
+A.開發
+	利用JS呼叫PHP實現文字版網站瀏覽紀錄抓取(自製GA)-刪除一個月前的紀錄檔
+	Themida 2.3.7.0.zip
+	php_Shell
+		sample01:建立PHP函式庫
+		sample02:呼叫外部程式(bat)
+		sample03:PHP命令列帶參數(取代GET)
+		sample04:利用fwrite & fgets 存取命令列的輸出入[跟C語言類似-fread(buffer, sizeof(char), block_size, stdin);]
+
+
+2016/03/22開發紀錄
+A.開發		
+	C#建立DLL並且動態載入和動態卸載
+	code blocks 撰寫DLL和動態載入使用
+	付費虛擬主機資訊
+	tools_web
+	
+	
+2016/03/23開發紀錄
+A.開發		
+	jpv
+	JS網頁圖形時鐘
+	網頁萬年曆
+	基本框.php
+
+
+2016/03/24開發紀錄
+A.開發		
+	upload
+
+
+2016/03/25開發紀錄
+A.開發		
+	HTML5小畫家
+	jpv
+	palette(單一使用正常)
+	palette(單一和SERVER都正常)
+
+	
+2016/03/28開發紀錄
+A.開發
+	SYWEB_SYDServer_net20
+	
+
+2016/03/29開發紀錄
+A.開發
+	SYWEB_SYDServer_net20[必須手動登錄]
+	SYWEB_SYDServer加密輸出的結果
+	HTML5_speedtest.rar[HTML5的測速網頁]
+	google_seo
+	upload [強迫檔案要用下載模式，不會再瀏覽器開啟]
+	
+2016/03/30開發紀錄
+A.開發
+	Android_onlyWebView	[單純WebView框架+User-Agent修改與User-Agent修改驗證(使用現成WEB)]
+	google_seo	[將搜尋結果存成文字檔並直接下載]
+	ip2country	[IP轉換成國別查詢-內含直接呼叫網路API和使用現成函式庫]
+	SYWEB_SYDServer_net20	[修改操作模式]
+	SYWEB_SYDServer加密輸出的結果
+	
+	
+2016/03/31開發紀錄
+A.開發
+	upload [強迫檔案要用下載模式&瀏覽器開啟共存並繪製表格]
+	SEO_APP
+	SYWEB_SYDServer_net20
+	google_seo
+	
+
+2016/04/01開發紀錄
+A.開發
+	JS選檔和利用JS自動瀏覽部落格增加點擊率
+	JS讀取Local FILE
+	證明Themida打包後程式不能建立捷徑
+	google_seo
+	
+	
+2016/04/06開發紀錄
+A.開發
+	PHP_CURL_HTTPS
+	PHP抓取所有http header
+	單純JS網頁版GOOGLE_SEO
+	
+
+2016/04/07開發紀錄
+A.開發	
+	SYWEB_SYDServer_net20_00.rar[單純調整介面+燈號會動]
+	SYWEB_SYDServer_net20 [架上的按鈕程式，但還未測試]
+	
+	
+2016/04/07開發紀錄
+A.開發
+	SYWEB_SYDServer_net20
+		01.可以正確控制Server
+		02.修改UI
+		03.新增KEYPRO的顯示
+
+		
+2016/04/11開發紀錄
+A.開發
+	SYWEB_SYDServer_net20
+		01.修改UI+KEYPRO_API對應修改
+	PHProxy
+	
+	
+2016/04/12開發紀錄
+A.開發
+	SYWEB_SYDServer_net20
+		01.修改UI+沒插KEYPRO的BUG修正
+	ResizeReposition the Controls in a Dialog at your Pleasure [MFC]
+	
+	
+2016/04/13開發紀錄
+A.開發
+	C#反組譯[要有NET4]
+	LINE貼圖
+	PHP 線上圖片轉檔
+	
+	
+2016/04/14開發紀錄
+A.開發	
+	php_qrcode project
+	PHP_gif2icon
+
+
+2016/04/14開發紀錄
+A.開發	
+	PHP source code 加密
+	單純部落格點擊率變四倍
+	GOOGLE 搜尋
+	PHP開發自學經典
+	
+	
+2016/04/15開發紀錄
+A.開發
+	PHP source code 加密
+	單純部落格點擊率變四倍
+	GOOGLE 搜尋
+	PHP開發自學經典
+	
+
+2016/04/18開發紀錄
+	BCard 簡易發卡application 功能、畫面	
+	Eziriz .NET Reactor(自己找到的NET反反組譯)
+	
+
+2016/04/19開發紀錄
+	C# DataGridView 包含checkbox具有全選功能使用數姓+程式碼設定
+	C#在ComboBox內整合CheckBox
+	SYRIS_BCard_Easy_project
+	
+	
+2016/04/20開發紀錄
+	C# SQLite範例
+	SYRIS_BCard_Easy_project
+	
+	
+2016/04/21開發紀錄
+	SYRIS_BCard_Easy_project
+	SEO_WEB利用JS依序載入IFRAME降低同時存取網頁導致人數瀏覽統計落差太大問題
+	PDF2WORD免安裝軟體
+	
+
+2016/04/22開發紀錄
+	SYRIS_BCard_Easy_project
+	C# SMTP寄送郵件加上附件檔案
+
+	
+2016/04/25~2016/04/27開發紀錄
+	SYRIS_BCard_Easy_project
+	
+
+2016/04/28開發紀錄
+	WCARD改版資料
+	
+
+2016/04/29開發紀錄
+	SYRIS_BCard_Easy_project
+
+
+2016/05/03開發紀錄
+	SYRIS_BCard_Easy_project
+		01:修正DatePicker月曆顯示的原始BUG(今天發現日期和星期幾Map錯誤)
+	如何使用Windows API與HID device 進行資料的溝通	
+	
+
+2016/05/04開發紀錄
+	SYRIS_BCard_Easy_project
+	
+	
+2016/05/05開發紀錄
+	使用 SQLite實作『LEFT JOIN』+『WHERE』+『模糊查詢LIKE』(查詢適用於MySQL)
+
+2016/05/06開發紀錄
+	SYRIS_BCard_Easy_project
+	
+
+2016/05/09開發紀錄
+	使用20151119版本修正SYWEB_DBBackup遇到破百MB的備份檔戶無法還原的BUG問題-純PGSQL
+	20160509整理的工作進度to倫哥
+
+
+2016/05/10開發紀錄
+	發現該版本變成安裝檔時會有不能執行備份的BUG
+
+	
+2016/05/11開發紀錄
+	使用20151119版本修正SYWEB_DBBackup遇到破百MB的備份檔戶無法還原的BUG問題-純PGSQL
+		11月後半個月備份
+		V0110
+			SYWEB_DBBackup v3.nsi
+			SYWEB_DBBackup Setup.exe(交付FAE)
+			
+
+2016/05/12開發紀錄
+	SYRIS_BCard_Easy
+
+
+2016/05/13開發紀錄
+	SYRIS_BCard_Easy
+
+
+2016/05/16開發紀錄
+	SYRIS_BCard_Easy
+		基本UI都完成交給倫哥測試
+		NSIS 打包檔也寫好
+		設定檔也有備份
+
+
+20160517開發紀錄
+	Android proxy
+	
+		
+20160518開發紀錄
+	SYWEB_DBBackup(從20160511的版本開始改)-純PGSQL
+		增加LOG Write Class
+		把兩個Timer調成600ms
+		把每個函數加上Log紀錄
+		並在WIN10上策是上萬筆的DB備份與還原
+		
+		
+20160519開發紀錄
+	Android_PROXY類別[前同事寫的]
+
+
+20160520開發紀錄
+	php_bt_client
+	Windows下CodeBlocks使用Curl函式庫簡易範例
+
+
+2016/05/23開發紀錄
+	SYRIS_BCard_Easy
+		在修正UI並交給倫哥測試
+	C# DB example[MYSQL MSSQL PGSQL都有]-(可以一個一個CP出來玩看看)
+		
+
+2016/05/25開發紀錄
+	SYRIS_BCard_Easy
+		修改UI並交給倫哥測試
+
+
+2016/05/26開發紀錄
+	XP下安裝SYWEB步驟(建立XP下SYWEB_DBBackup測試環境)
+	SYWEB_DBBackup(從20160518的版本開始改)-純PGSQL
+		修該所有檔案路徑寫法全部轉成絕對路徑(XP已經測試OK)
+
+
+2016/05/27開發紀錄
+	SYWEB_DBBackup(從20160526的版本開始改)-純PGSQL
+	SYRIS_BCard_Easy
+
+
+2016/05/30開發紀錄
+	SYRIS_BCard_Easy
+
+
+2016/05/31開發紀錄
+	羅哥20160530傳過來的範例
+	SYWCard-Sample-Test-Debug(按照羅哥過來程式利用CODEBLOCKS建立可編譯的測試專案)
+	SYWEB在2008錯誤訊息
+
+
+2016/06/01開發紀錄
+	SYWEB在2008錯誤訊息(自己寫了增加環境變數的方法)
+	羅哥20160601版本
+	SYWCard-Sample-Test-Debug-20160601
+	CBproject_Debug
+	SYWEB_DBBackup(20160527版本追蹤結果).PNG
+	SYWCardLib_project
+		SYWCardLib(CodeBlocks DLL專案)
+		SYWCardLib_CPP_test(CodeBlocks cmd測試DLL專案)
+		SYWCardLib_CS_test(C# cmd測試DLL專案)
+		
+
+2016/06/02開發紀錄
+	SYWCardLib_project(還無法正常讀卡)
+		SYWCardLib(CodeBlocks DLL專案)
+		SYWCardLib_CPP_test(CodeBlocks cmd測試DLL專案)
+
+
+2016/06/03開發紀錄
+	SYWCardLib_project(可正常讀寫卡但是參數都是寫死)
+		SYWCardLib(CodeBlocks DLL專案)
+		SYWCardLib_CPP_test(CodeBlocks cmd測試DLL專案)
+		SYWCardLib_CS_test(C# cmd測試DLL專案)
+
+
+2016/06/06開發紀錄
+	羅哥程式實驗紀錄
+		01.如果直接呼叫GWCard-Write.exe+GWCard-Read.exe，則因為中間沒有暫停，所以GWCard-Read會錯誤
+		02.如果呼叫GWCard-Write.exe+pause+GWCard-Read.exe，在暫停時把卡片移開再放回去並且等到BEEP之後再執行讀卡，那就都正常
+	參數與UI對應(延伸資料-PS有超過一半無法MAP)
+	羅哥範例寫入函數名稱和UI對應
+	羅哥範例讀出函數名稱和UI對應
+
+
+2016/06/07開發紀錄
+	SYWCardLib_project(已經寫卡參數化)
+		SYWCardLib(CodeBlocks DLL專案)
+		SYWCardLib_CPP_test(CodeBlocks cmd測試DLL專案)
+		SYWCardLib_CS_test(C# cmd測試DLL專案)
+
+
+2016/06/08開發備份
+	SYWCardLib_project(讀/寫都參數化)
+		SYWCardLib(CodeBlocks DLL專案)
+		SYWCardLib_CPP_test(CodeBlocks cmd測試DLL專案)
+		SYWCardLib_CS_test(C# cmd測試DLL專案)
+	討論(結論:門區群組全部都是只有一個)
+	
+
+2016/06/13開發備份
+	SYRIS_BCard_Easy(20160613備份_01)-從2016/05/30的版本開始新增WCARD的簡易發卡UI
+	SYRIS_BCard_Easy(20160613備份_02)-增加基本UI事件
+	SYWCardLib_project(新增把讀出來的有效期限轉成字串)
+		SYWCardLib(CodeBlocks DLL專案)
+		SYWCardLib_CPP_test(CodeBlocks cmd測試DLL專案)
+		SYWCardLib_CS_test(C# cmd測試DLL專案)
+
+2016/06/14開發備份
+	SYRIS_BCard_Easy(20160614備份)-從20160613備份_02的版本開始-可以寫卡
+
+
+2016/06/15開發備份
+	SYRIS_BCard_Easy(20160615備份)-讀寫卡加上等待動畫
+	SYWCardLib_project(調整WCard_init內容，新增 WCard_initVar)
+	
+
+2016/06/16開發備份
+	SYRIS_BCard_Easy(20160616備份)-做防呆+修BUG
+	SYWCardLib_project(修BUG)
+	20160616羅哥更新DLL
+	
+	
+2016/06/17開發備份
+	SYRIS_BCard_Easy(20160617備份)-可設定OFFSET
+	SYWCardLib_project(可設定OFFSET)
+
+
+2016/06/20開發備份	
+	SYRIS_BCard_Easy(20160620備份)-進階的0和1完成
+	SYWEB_DBBackup完整程式碼與安裝檔案備份-交付給公司(2016/06/14最後編譯只為了要修改語系)
+
+
+2016/06/21開發備份
+	SYRIS_BCard_Easy(20160621備份)-進階的0~4完成
+	純C++的vector運用在DLL中的白痴範例
+
+
+2016/06/22開發備份
+	SYRIS_BCard_Easy(20160622備份)-進階的0~5完成(6、8、10發現會有問題)
+	SYWCardLib
+	SYWCard-Sample-Test-Debug-20160601
+	
+	
+2016/06/23開發備份
+	SYRIS_BCard_Easy(20160623備份)-進階的0~8完成
+	羅哥20160623更新API
+	
+	
+2016/06/24開發備份
+	SYRIS_BCard_Easy(20160624備份)-修正在簡易讀卡轉進階UI的防呆
+
+
+2016/06/27開發紀錄
+	BCard_Wcard發卡打包(20160627)
+
+
+2016/06/28開發紀錄
+	SYRIS_BCard_Easy(20160628備份)-修正MAIL防呆BUG
+	
+
+2016/06/29開發紀錄	
+	廣州回報SYWEB_SYDServer XP 異常的處理回應(我最後請對方做登錄資料庫修復)
+	宜倫回復我在簡體XP上無法使用WEB SERVER的對話(無解)
+	
+	
+2016/06/30開發紀錄
+	SYRIS_BCard_Easy(20160630備份)-補UI防呆程式、增加/修改註解
+	
+	
+2016/07/01開發紀錄
+	公司的WEB SERVER和我自己用的USBWEBSERVER如果要在XP上執行一定都要VC 2008 RUNTIME
+
+
+2016/07/04開發紀錄	
+	Visual C++(VC) 利用DLL和pexports.exe和lib.exe產生VC專案在編譯時所需的LIB檔
+
+
+2016/07/06開發紀錄
+	SYRIS_BCard_Easy(20160706備份)-單純新增頁籤(頁籤內的原件都未寫程式，也沒有多國語系)
+
+
+
+2016/07/07開發紀錄
+	SYRIS_BCard_Easy(20160707備份)-新增頁籤跟設定檔做連結，WCARD的進階發卡用途和類型選項全部補齊，並且確定除了資料設定外其他都可正常寫讀卡
+
+
+2016/07/12開發紀錄
+	C# Dockpanel(分割視窗)
+
+
+2016/07/13開發紀錄
+	指紋卡片資料庫規劃資料(20160713)
+
+
+2016/07/14開發紀錄	
+	C# 將中文字轉換成unicode格式_unicode格式轉換中文字[應用在中文寫入_讀取 SQLITE]
+
+
+2016/07/18開發紀錄
+	SYRIS_Fingerprint_project
+		SYRIS_Fingerprint_01-做出基本MENU的Dock範例
+		SYRIS_Fingerprint_02-MENU內容和事件實作+Content UI顯示/隱藏測試
+		
+		
+2016/07/19開發紀錄
+	C# JSON函式庫	
+	C#和PHP交握溝通	
+		
+		
+2016/07/20開發紀錄		
+	SQLite GUI	
+	指紋卡片資料庫規劃資料(20160720)	
+		
+		
+2016/07/21開發紀錄	
+	SYRIS_Fingerprint[多國語系、設定檔]	
+		
+		
+2016/07/22開發紀錄			
+	CS_treeView_checkbox
+	SyrisDeviceServerRemoteUIAPI-2016071301
+		
+		
+2016/07/28開發紀錄			
+	CS_treeView_checkbox_dynamic4F	
+	WEB(javascript)treeview checkbox	
+		
+		
+		
+2016/07/29開發紀錄	
+	SYWEB_SYDServer_net20_project
+		v0125-之前發行的版本(2016/05/05)
+		v0126-讀取LOG改成 Transfer-Encoding: chunked(2016/07/29)
+		
+		
+2016/09/05開發紀錄
+	CodeBlocks C++ 使用 Windows API(WinExec)呼叫Windows EXE來執行(啟動後不會咬住)
+	CS_open_SelfFloder
+	SYRIS_Offline
+		目前還有資料表未讀取api
+		
+		
+2016/09/06開發紀錄		
+	■SYRIS_Offline[目前還有資料表未讀取api]
+		◆CS_Lib
+			▼Animation.cs[執行PHP連線和顯示連線等待動畫]，MVC的VC
+			▼CS_PHP.cs[執行PHP連線模組]，MVC的M
+			▼Encrypt.cs[字串加解密和檔案加解密]，MVC的M
+			▼Json2Class.cs[單純Json分析用資料類別]，MVC的M
+			▼Language.cs[語系變數]，MVC的M
+			▼SettingFile.cs[儲存/讀取設定值]，MVC的M
+			▼SQLite.cs[SQLite存取]，MVC的M
+			▼Tree_Node.cs[TreeView for DB的資料元件]，MVC的M
+		◆Language
+			▼LanguagePack.en.resx，MVC的M
+			▼LanguagePack.zh-CN.resx，MVC的M
+			▼LanguagePack.zh-TW.resx，MVC的M
+		◆MainWnd.cs[MDI介面的主框架]，MVC的VC
+		◆SettingWnd.cs[MDI介面的子視窗用來設定程式參數]，MVC的VC
+		◆EditWnd.cs[MDI介面的子視窗用來編輯工作資料]，MVC的VC
+	■NSISPortable.rar	
+		◆SYRIS_Offline.nsi[最新打包專安檔]
+		
+		
+2016/09/07開發紀錄
+	■SYWEB_SYDServer project[包含v0125和v0128]
+		◆修正BUG[廣州璽瑞-Jacto黃潔濤反映]
+		    try
+            {
+                this.tool_status2.Text = "Start Up Time:" + ts.ToString().Substring(0, ts.ToString().LastIndexOf('.'));//防呆 at 2016/09/07
+            }
+            catch { }
+	■SYRIS_Offline[目前有資料表讀取但還未寫入SQLITE]
+		
+		
+2016/09/08開發紀錄	
+	■SYRIS_Offline[所有該下載的資料都已經從API取的並儲存到DB中，而且利用修改_book.dep_id = _book.id;//測試用at 2016/09/08 測試程式可正常工作]
+	
+		
+2016/09/09開發紀錄		
+	■SYWEB_SYDServer project[v0128]	
+		◆登錄介面資新增關閉按鈕
+		◆修改所有SOCKET的連線時間為60000秒
+		
+		
+2016/09/12開發紀錄		
+	■API進度追蹤
+		
+		
+2016/09/14開發紀錄
+	■協助政樟修改VB範例
+		◆VB6 TOOL
+		◆Sample_VB6[修改的內容]
+		◆Sample_BCB6[修改專案檔讓免安裝版BCB6可以編譯，修改內容同VB6]
+		◆Xtive SDK DLL-V0104 2013-04-15.rar[公司原始範例]
+	■SYRIS_Offline
+		◆新增KEYPRO的顯示的API預留接口(實現50%)-private Boolean m_blnkeypro=false;//預設沒有抓到
+		
+		
+2016/09/19開發紀錄		
+	■SYRIS_Offline
+		◆只修改註解~public ArrayList m_ALget = new ArrayList();//取出節點要存放到DB的資訊[ 目前因為DB尚未決定所以資料室亂放的 at 2016/09/19 by jash ]
+		
+		
+2016/09/20開發紀錄			
+	■SYRIS_Offline
+		◆修正SQLite內TABLE dept的dep_id 型態從int->文字
+		◆修改MENU的標題為了擴充準備
+		◆修改MENU變數為了擴充準備[有測試確定用陣列方式OK]
+		◆把通行時段選項從48改成49 ~ System.Object[] m_ItemObject = new System.Object[49];//數量從48改成49，因為副總說00002359是全部通行，所以要多一個23:59 by jash.liao at 2016/09/20
+		
+		
+2016/09/21開發紀錄			
+	■SYRIS_Offline
+		◆增加註解	
+		
+		
+2016/09/22開發紀錄		
+	■SYRIS_Offline
+		◆在主頁新增change_Title()，任意更換標題函數	
+		◆增加註解			
+		
+		
+2016/09/23開發紀錄
+	■SYRIS_Offline
+		◆修正重複呼叫登出API的BUG[static public void Animation_Wait_GetData(object arg)//匯入DB資料]
+		◆增加註解
+	■PID控制器.pdf
+		
+		
+2016/09/26開發紀錄
+	■SYRIS_Offline		
+		◆增加註解
+		
+		
+2016/09/29開發紀錄
+	■回復Hino
+		◆skype對話紀錄
+		◆口頭討論完之後傳給Hino的檔案
+
+
+2016/09/30開發紀錄
+	■SYRIS_Offline		
+		◆增加註解
+
+
+2016/10/03開發紀錄
+	■SYRIS_Offline		
+		◆修改語系檔[卡片有效期設定->門區通行有效期設定]
+	■為了讓總經理可以做簡報修改UI介面[SYRIS_Offline]
+
+2016/10/04開發紀錄
+	■SYRIS_Offline
+		◆修改UI(按照邱總建議)
+
+
+2016/10/05開發紀錄
+	■SYRIS_Fingerprint
+		◆新增pgsql連線測試功能
+		◆pgsql的users匯入sqlite的People_List[用Sqlite 插入資料(INSERT INTO)加速方法]
+
+		
+2016/10/06開發紀錄
+	■SYRIS_Fingerprint
+		◆按照網路連線模式控制[基本數據管理UI]的按鈕是否顯示連動
+		◆pgsql的[人員、部門、職稱、職別]資料全部可以匯入sqlite中
+		◆pgsql的[卡片]資料全部可以匯入sqlite中
+		◆新增[卡片UI]的表單並且整合到原本架構中
+		◆新增[卡片UI]語系資源
+
+		
+2016/10/07開發紀錄
+	■SYRIS_Fingerprint
+		◆新增[卡片UI]的功能全部實作完成
+		◆新增等待動畫功能
+		◆修改語系資源
+
+
+2016/10/12開發紀錄
+	■SYRIS_Fingerprint
+		◆新增[指紋機UI]的功能全部實作完成
+		◆新增[指紋UI]60%
+		◆新增[指紋傳送UI]40%
+		◆修改[卡片UI]
+		
+
+2016/10/13開發紀錄
+	■SYRIS_Fingerprint
+		◆修改[指紋傳送UI]增加等待動畫，並發現人員的資料是錯的(因為要用指紋資料表才正確)，目前沒有指紋資料
+	■python_flask教學
+
+
+2016/10/14開發紀錄
+	■SYRIS_Fingerprint
+		◆修改[SQLite.cs]增加CREATE TABLE OutputRecord_List (uid INTEGER PRIMARY KEY, PL_uid INTEGER, FDL_uid INTEGER,Data TEXT)，Data目前規劃存放日期
+		◆SQL 去除重複[DISTINCT] 運用在有建立指紋的人員列表.txt		[準備修改指紋傳送UI用]
+	■Hino打包錯誤資訊討論
+	
+	
+2016/10/17開發紀錄
+	■python_base_pdf
+	■SYRIS_V8
+
+
+2016/10/18開發紀錄
+	■SYRIS_V8
+		◆把所有LIB都先搬家
+		◆程式內所有專案名替換(SYRIS_Offline ->SYRIS_V8)
+		◆系統設定UI完成
+		◆部門管理UI 70%
+		◆新增語系資源功能
+		
+
+2016/10/19開發紀錄
+	■SYRIS_V8
+		◆部門管理UI完成
+		◆職稱管理UI完成[從SYRIS_Fingerprint CP過來]
+		
+		
+2016/10/20開發紀錄
+	■SYRIS_V8
+		◆新增Passage_Time.cs [任意輸入通行時段，最後輸出可通行的三個時段]
+		◆V8_WEB_DB
+		◆CS_V8_DB.doc
+
+
+2016/10/21開發紀錄
+	■SYRIS_V8
+		◆修改SQLite.cs[把所有的資料表重新定義]
+		◆因應資料表修改，修改之前所有UI
+		◆新增人員資料管理UI
+		◆新增門區群組資料管理UI
+
+
+2016/10/24開發紀錄
+	■SYRIS_V8
+		◆完成基本資料所有功能
+		◆在所有基本資料UI內都加上GridViewFunction函數，利用該函數達到修正當完成新增/修改/刪除時，下拉式選單無法連動顯示最後一筆完整資訊的BUG，也確保隱藏的uid值的正確性
+		◆創建出第二區的主選單		
+	■SYFingerprintCapture-0.6.0.0001.zip[羅哥給的第一版指紋範例]
+	■CB_SYFingerprintCapture
+		◆把所有羅哥的[SYFingerprintCapture-0.6.0.0001.zip]H和C檔全部放到PROJECT中，並且可以做初步編譯	
+		◆引用兩個.a擋到專案中 OK
+		◆在main.cpp中加入羅哥sample.c的所有#include和#define OK
+		
+		
+2016/10/25開發紀錄
+	■CB_SYFingerprintCapture
+		◆C++版,測試後可以顯示最後結果，但過程會無法出現
+		◆C語言版，測試後完全正常
+			-把所有羅哥的[SYFingerprintCapture-0.6.0.0001.zip]H和C檔「移除目錄」並全部放到PROJECT中
+			-引用兩個.a擋到專案中
+			-把羅哥sample.c拷貝到main.c
+			-自己把重複定義的型態註解掉[ggd_global_define.h內有jash的關鍵字就是我改的]
+			-最後進行編譯，會發現所有的#include的相對路徑和目前事實不一致，所以把所以路徑程式移除
+	■CB_SYFCLib project
+		◆01[CB_SYFCLib、CB_SYFCLib_test]-可以簡易兩數相加API和API運作記錄檔產生
+		◆02[CB_SYFCLib]-已經把CB_SYFingerprintCapture變成API可以通過編譯，但是還未測試
+		
+
+2016/10/26開發紀錄
+	■SYRIS_Fingerprint
+		◆以整合02[CB_SYFCLib]，確定可以抓取指紋
+		◆抓到指紋可以寫到C#記憶體中
+		◆會顯示指紋圖案
+
+
+2016/10/27開發紀錄
+	■SYRIS_Fingerprint
+		◆完成紀錄指紋UI
+		◆修改SQLite.CS把存取的OPEN方式和SYRIS_V8一樣
+		◆修改所有SQLite的存取UI，一定在最後呼叫CLOSE
+	■測試指紋機連線
+
+
+2016/10/27開發紀錄
+	■SYRIS_Fingerprint
+		◆修改語系檔
+		◆SYFingerprintCapture-0.6.0.0001(20161028).rar[羅哥新版的中介，所以下星期一又要把DLL重新打包在測試]
+	■C# TCP允許多人連線SERVER和重複開啟的Client.rar[為了實作設備連線準備的範例]
+	■JQuery Tetris[俄羅斯方塊].rar
+	
+
+2016/10/31開發紀錄
+	■CB_SYFingerprintCapture_1031[base on SYFingerprintCapture-0.6.0.0001(20161028).rar的sample(1).c]
+		◆可以使用快速抓指紋模式
+	■CB_SYFCLib_1031[base on CB_SYFingerprintCapture_1031]
+	■SYRIS_Fingerprint
+		◆把所有DLL呼叫換成新版(20161028)
+
+
+2016/11/01開發紀錄
+	■SYRIS_Fingerprint
+		◆和設備連線+傳送命令
+	■V7CommandTools_SW_V0791_20160524
+		◆新增註解
+		◆閱讀筆記
+		◆把編譯專案設定成可設中斷點[調整BCB設定-http://jashliao.pixnet.net/blog/post/220855763]
+
+
+2016/11/03開發紀錄
+	■SYRIS_Fingerprint
+		◆20161103又要全部自重來的徵兆
+			-因為要讓指紋機具有顯示真實指紋圖片
+			
+	■SYRIS_V8
+		◆新增人員跨部門管理UI
+			-整合到選單之中，已經可以顯示
+			-以支援基本的語系切換
+			-comboBox賦予資料並且可連動調整
+		
+
+2016/11/04開發紀錄
+	■SYRIS_V8
+		◆人員跨部門管理UI(全部功能完成)
+			-DataGridView資料顯示與事件連動
+			-TreeView顯示資料
+			-新/修/刪+UI連動
+		◆門區跨部門區群組管理UI(全部功能完成)
+			-整合到選單之中，已經可以顯示
+			-以支援基本的語系切換
+			-comboBox賦予資料並且可連動調整
+			-DataGridView資料顯示與事件連動
+			-TreeView顯示資料
+			-新/修/刪+UI連動
+
+
+2016/11/07開發紀錄
+	■SYRIS_V8
+		◆修改資源檔(把人員UI的編號改成工號)
+		◆增加shortcut_user資料表-CREATE TABLE shortcut_user (uid INTEGER PRIMARY KEY,name TEXT UNIQUE,member TEXT);
+		◆新增快捷人員UI
+			-整合到選單之中，已經可以顯示
+			-以支援基本的語系切換
+			-TreeView顯示基本(全部)資料
+
+
+2016/11/08開發紀錄
+	■SYRIS_V8
+		◆新增快捷人員UI
+			-TreeView選擇事件
+			-TreeView搜尋功能
+
+
+2016/11/09開發紀錄
+	■SYRIS_V8
+		◆新增快捷人員UI(全部功能完成)
+			-修正TreeView顯示+搜尋+紀錄的BUG
+			-整合新/修/刪和UI連動
+		◆新增快捷門區群組
+			-整合到選單之中，已經可以顯示
+
+
+2016/11/10開發紀錄
+	■SYRIS_V8
+		◆新增快捷門區群組(全部功能完成)
+			-以支援基本的語系切換
+			-TreeView顯示基本(全部)資料		
+			-TreeView選擇事件
+			-TreeView搜尋功能		
+			-修正TreeView顯示+搜尋+紀錄的BUG
+			-整合新/修/刪和UI連動
+		◆修正UI無法連動的BUG(先前未測出)
+
+
+2016/11/11開發紀錄
+	■C# DLL視窗[因為因應競爭廠商MAX架構找的資料]
+	■SYRIS_V8
+		◆TreeView增加ICON顯示
+		
+
+2016/11/14開發紀錄
+	■SYRIS_V8
+		◆修正TreeView 被選擇時ICON顯示異常BUG
+		◆資本資料輸入UI都要有TreeView，而且TreeView都具備選擇對應資料資料選擇的能力
+	■Visual C# 2010 Expressg手動安裝ReportViewer元件
+	
+	
+2016/11/15開發紀錄
+	■SYRIS_V8
+		◆修改SQLite.cs 新增五個資料表
+	
+
+2016/11/16開發紀錄
+	■SYRIS_V8
+		◆利用人員管理測試把清除按鈕改成搜尋
+		
+
+2016/11/17開發紀錄
+	■C# PDF資料[為了製作報表準備]
+	■C# WebCam[為了抓取大頭照準備]
+	■SYRIS_V8
+		◆人員資料多出三個欄位[身分證號、性別、啟用]，所以對應UI進行修改[修改完成]
+
+
+2016/11/18開發紀錄
+	■增加PDF元件[itextsharp]到C#專案並測試使用完整步驟紀錄
+	■使用PDF元件[itextsharp]到C#專案 新增中文字+顏色+大小 程式
+	■使用PDF元件[itextsharp]到C#專案 繪製表格
+
+2016/11/21開發紀錄
+	■SYRIS_V8_Base[基本DOCK UI]
+	■CS_PDF_test[產生 PDF、指定字型大小顏色、繪表格、抬頭頁碼]
+	
+	
+2016/11/22開發紀錄	
+	■CB_SYFingerprintCapture_1122[按照羅哥的SYFingerprintCapture-0.6.0.0002.zip]
+		-雖然可以抓到19K的資料，但是資料值都是0[bug]
+
+
+2016/11/23開發紀錄		
+	■C# diagram editor[升位圖]
+
+	
+2016/11/24開發紀錄
+	■C# diagram editor[升位圖]
+		◆A Utility for Network Diagrams[加上註解]
+		◆參考資料-00_CS_FormDraw[基本繪圖]
+		
+
+2016/11/25開發紀錄
+	■A Utility for Network Diagrams[加上註解]
+		◆選取物件移動時，元件會跟著移動
+		◆繪圖時不會閃爍
+
+
+2016/11/28開發紀錄
+	■A Utility for Network Diagrams[加上註解]
+		◆增加圖層相關註解
+	■SYRIS_Fingerprint
+		◆修改程式進入的起始頁面
+		
+
+2016/11/29開發紀錄		
+	■CB_SYFingerprintCapture_1122
+		-雖然可以抓到19K的資料，但是資料值都是0[bug]
+
+
+2016/11/30開發紀錄	
+	■SQL 處理速度(效能) 文章整理
+	■SYRIS_Fingerprint
+		◆修正資料庫和圖檔的存放位置
+
+
+2016/12/01開發紀錄	
+	■20161201_C# UI製作教學連結收藏
+	■C# 標準畫面分割元件[SplitContainer ]
+	■C# outlook menu
+
+2016/12/02開發紀錄
+	■C# outlook menu_自己修改
+		◆元件可以跟著UI放大縮小[置中對期]
+		◆滑鼠碰觸按鈕會改變圖示
+
+
+2016/12/05開發紀錄
+	■CB_SYFingerprintCapture_1205 [有標註那些是用舊檔]
+		-雖然可以抓到19K的資料，但是資料值都是0[bug]
+	■使用假指令達到快速註解和啟用程式碼
+	■mysql mssql 同步
+
+
+2016/12/06開發紀錄
+	■MySQL 5.7.16.0安裝
+	■20161206羅哥回復
+	■mysql mssql 同步
+	
+	
+2016/12/07開發紀錄	
+	■SQL轉換工具測試結果	
+
+
+2016/12/09開發紀錄
+	■jashliao Web System 切版+JS
+		01_jashliao_WEB_1920切版
+		02_jashliao_WEB_1920切版+左側MENU抽離
+		03_jashliao_WEB_1920切版+左側MENU抽離+右側主要工作區抽離
+		04_finish
+
+
+2016/12/12開發紀錄
+	■確定可以完全和公司WEB API通訊(登錄+Get Data+Send Data)
+		◆SYRIS_Offline
+
+
+2016/12/13開發紀錄
+	■PHP 簡易蜘蛛(spider)
+	
+	
+2016/12/14開發紀錄
+	■破解鉅亨網美股[不用加入會員也可以自訂選股清單]
+	
+	
+2016/12/15開發紀錄
+	■指紋抓取圖片命名儲存規則(20161215)
+
+
+2016/12/16開發紀錄
+	■jburkardt_allocatable_c
+		◆純C 動態配置記憶體
+		◆產生AB兩數之間均勻分布的隨機變數函數[i4_uniform_ab]
+		◆顯示目前時間函數[timestamp]
+	■C#和MFC如何使你的表單樣式固定，不因系統設定而變化
+
+
+2016/12/19開發紀錄
+	■羅哥抓指紋範例(20161219)
+	■CS_AutoSize_ChangeDisplay_useCode
+
+
+2016/12/20開發紀錄
+	■C# 改變元件大小和偵測WIN7_WIN10放大倍率後顯示器參數變化(解析度)
+	■C#顯示編譯時間和版號
+	■MFC TabUI
+	■MFC UI畫面(視窗)自動縮放+改變字型大小
+	■MFC 設定元件字型大小和DPI
+	■純C++呼叫WIN API抓取WINDOWS 螢幕DPI設定+螢幕放大率+解析度
+	
+	
+2016/12/21開發紀錄	
+	■modbus
+		◆Modbus TCP class
+		◆介紹文件
+
+
+2016/12/23開發紀錄	
+	■dbconvert步驟
+	■KMS8_V3.1[Win7].zip
+	■mysql mssql 同步
+
+
+2016/12/26開發紀錄
+	■調教虛擬機器WIN10效能
+		◆URL
+		◆TOOL
+	
+
+2016/12/27開發紀錄
+	■C#多人連線Server+PHP的Client[兩種平台利用SOCKET通訊]
+		◆文件
+			-C# TCP允許多人連線SERVER和重複開啟的Client
+			-php_socket_project
+
+
+2016/12/29開發紀錄
+	■讓C# treeView 支援多選範例
+	■C# 偵測WIN7_WIN10放大倍率後顯示器參數變化並自動改變元件大小 (解析度)
+
+
+2016/12/30開發紀錄
+	■Balsamiq Mockups：PM 必備超強繪製工具，把你的想法都具現化！
+	■ICON收集
+	■SYWEB-V8-Workstation-GUI-2016122901(羅哥提供)
+	■Android 6權限規定
+
+
+2017/01/03開發紀錄
+	■C# 自訂文字方塊讓元件被進用時文字顏色保持黑色
+	■C#自己製作簡單的元件(包含三個子元件的按鈕)
+	■C#模擬簡易的圓角按鈕
+		◆01_CS_RoundPanel_Button
+		◆02_CS_Round_Objs
+	■ICON收集
+	
+
+2017/01/04開發紀錄	
+	■C#模擬簡易的圓角按鈕
+	■C#繪圖按鈕
+	■ICON收集
+	
+	
+2017/01/06開發紀錄	
+	■SYWEB-V8-Workstation
+	■QtSharp.TestApps-master
+	■XPThemes
+
+
+2017/01/09開發紀錄		
+	■SYWEB-V8-Workstation
+
+
+2017/01/10開發紀錄
+	■20170109_晚上
+	■SYWEB-V8-Workstation
+	■TreeView 複選支援三種狀態
+	■visual studio 2012 add user control to toolbox
+	■VS2013
+
+
+2017/01/11開發紀錄
+	■SYWEB-V8-Workstation
+	■多國語系TOOL
+
+
+2017/01/12開發紀錄
+	■SYWEB-V8-Workstation
+
+
+2017/01/13開發紀錄
+	■SYWEB-V8-Workstation
+		-字型大小依解析度縮放
+		-自製按鈕元件實現事件傳遞到表單上(但目前還是用原本架構)
+	■TreeView 複選支援三種狀態
+		-確定第一個的方法夠標準
+
+		
+2017/01/16開發紀錄		
+	■Android Upload File To Server
+	■C# SQLite存放圖片檔
+	■ICON收集
+	■SYWEB-V8-Workstation
+	■利用curl命令模式將檔案透過PHP上傳到WEB SERVER	
+		
+		
+2017/01/17開發紀錄			
+	■SYWEB-V8-Workstation		
+		
+
+2017/01/18開發紀錄			
+	■SYWEB-V8-Workstation
+
+
+2017/01/19開發紀錄
+	■Android 字型
+	■SYWEB-V8-Workstation
+	■SYWEB-V8-Workstation-GUI-20170119(羅哥提供)
+
+
+2017/01/20開發紀錄
+	■C# GDI+簡單繪圖
+	■SYWEB-V8-Workstation
+	■機型
+
+
+2017/01/23開發紀錄
+	■SYWEB-V8-Workstation
+	■Delta_table_schema
+	■google up url
+	■SYWEB-V8-Workstation-GUI-2017011201[PDF+bmpr]
+	■機型
+
+
+2017/01/24開發紀錄
+	■SYWEB-V8-Workstation
+	■SYWEB-Delta-讀卡系統-開發進度表-2017012401
+	■台達案SYWEB-V8-Workstation 目前進度(20170124)
+
+
+2017/01/25開發紀錄
+	■SYWEB-V8-Workstation
+	■計算程式碼總行數
+
+
+2017/02/02開發紀錄
+	■SYWEB-V8-Workstation
+	■ICON收集
+
+
+2017/02/03開發紀錄
+	■SYWEB-V8-Workstation
+	■Changing Display Settings[條列所有螢幕解析度+設定 範例]
+
+
+2017/02/06開發紀錄
+	■SYWEB-V8-Workstation
+		-A/B 4門 LEVEL1~4 元件
+
+
+2017/02/07開發紀錄
+	■SYWEB-V8-Workstation
+		-A/B 12門 LEVEL1~4 元件
+	■VC MFC UserControl(自訂控制項範例)
+
+
+2017/02/08開發紀錄
+	■SYWEB-V8-Workstation
+		-新增SetTimeEnable2.cs
+		-修改editpassword.cs
+		-新增設定門區UI(已完成1/3)
+
+
+2017/02/09開發紀錄
+	■SYWEB-V8-Workstation
+		-完成設定門區UI
+	■Windows相關架站
+	■鑫享年年
+
+
+2017/02/10開發紀錄
+	■SYWEB-V8-Workstation
+		-新增ckbtext.cs
+		-新增Grp_ckbtext.cs
+
+
+2017/02/13開發紀錄
+	■SYWEB-V8-Workstation
+		-修改ckbtext.cs
+		-修改Grp_ckbtext.cs
+		-新增ElevatorGroups.cs
+	■ToolTip.SetToolTip 方法 (Control, String) (System.Windows.PFD(邱總要的提示文字功能)
+
+
+2017/02/14開發紀錄
+	■SYWEB-V8-Workstation
+		-完成設定電梯UI
+
+
+2017/02/15開發紀錄
+	■SYWEB-V8-Workstation
+		-加入DatePicker專案
+		-完成區域門區電梯群組列表UI
+		-新增區域門區電梯群組編修UI(完成1/2)
+
+
+2017/02/16開發紀錄
+	■SYWEB-V8-Workstation
+		-完成區域門區電梯群組編修UI
+
+
+2017/02/17開發紀錄
+	■SYWEB-V8-Workstation(Delta)
+		-刪除沒用的OUTLOOK MENU
+		-刪除沒用的分頁
+		-完成基本讀取CSV語系檔功能
+
+
+2017/02/17開發紀錄
+	■SYWEB-V8-Workstation(Delta)
+		-使用(AutoSize=false;+AutoEllipsis=true;)調整UI元件，藉此克服不同語系文字長度不移置問題
+		-新增一個函數PromptTextBox_initTipText()統一處理具有提示文字的的TextBox
+		-修正所有自訂元件的(AutoSize=false;+AutoEllipsis=true;)
+
+
+2017/02/21開發紀錄
+	■SYWEB-V8-Workstation(Delta)
+		-修正[設置控制器]UI的事件連動BUG(把所有事件移回 Form1.cs)
+
+
+2017/02/22開發紀錄
+	■SYWEB-V8-Workstation(Delta)
+		-完成所有離開按鈕的事件撰寫
+        private void butLeave_Click(object sender, EventArgs e)
+        {
+            while (m_StackTPOld.Count > 0)
+            {
+                m_TPOld = ((TabPage)m_StackTPOld.Pop());
+                if (m_TPOld != null)
+                {
+                    if (m_tabMain.SelectedTab != m_TPOld)
+                    {
+                        m_tabMain.SelectedTab = m_TPOld;
+                        break;
+                    }
+                }
+            }
+        }		
+
+
+
+2017/02/23開發紀錄
+	■SYWEB-V8-Workstation(Delta)
+		-統一字型為12號字(廖副說英文要小兩號，因應英文UI 只能儘量調版，如果還是不行就只能縮寫，另外最後訊息要另外做但是那是後期)
+		-新增基本的『Sub0000Content、Sub000001Content、Sub0001Content、Sub0003Content、Sub000301Content』(但是邱總覺得不需要，因為已經有載入樣板了)	
+	■FontComboDemo(C#選擇字型和調整的範例)
+		
+
+2017/02/23開發紀錄
+	■SYWEB-V8-Workstation(Delta)
+		-新增系統設定頁面(登錄測試未實現)
+		-左側主選單時做系統設定對應按鈕
+
+
+2017/03/01開發紀錄
+	■SYWEB-V8-Workstation(Delta)
+		-解決英文語系時，文字會壓在圖上
+		
+
+2017/03/02開發紀錄
+	■SYWEB-V8-Workstation(Delta)
+		-將UI的開啟TabPage調整只有兩頁
+		-新增000001UI的兩個下拉式選單內容
+	■機型
+
+	
+2017/03/03開發紀錄
+	■SYWEB-V8-Workstation(Delta)
+		-修改000001UI實現動態切換下方子元件顯示狀態
+
+
+2017/03/06開發紀錄
+	■20170306 SKYPE 邱總整理V8修改內容
+	■SYWEB-V8-Workstation(Delta)
+		-新增m_tabSub0100，準備從Delta版改回V8版
+	■C# 範例備份
+		-CS_AES_Files
+		-CS_CallPHPSOAP
+		-CS_Console_AES
+		-CS_Console_DES_Filr
+		-CS_Console_HttpPost
+		-CS_Console_Json
+		-CS_Console_login_logout_test
+		-CS_Console_replaceTxT
+		-CS_Forms_OnlyOne
+		-CS_Forms_shortcut_net20
+		-CS_Forms_showVer
+		-CS_PDF_test
+		-使用unzip解壓縮zip
+		-讓C# treeView 支援多選範例
+	■C++ AES File
+		-LINUX C OPENSSL實作AES檔案加解密
+		-WIN_C++_AES 檔案加解密
+		-WINDOWS_LINUX_C_AES檔案加解密範例
+	■[RAR密碼破解] Advanced RAR Repair 1.2
+	
+	
+2017/03/07開發紀錄
+	■SYWEB-V8-Workstation(Delta)
+		-增加SQLite.cs[從SYRIS_V8搬過來]
+		-增加m_tabSub0100頁籤，已經放入對應元件，還未製作多國語系(準備從Delta為基礎改回V8-Workstation)
+		-增加m_tabSub010000頁籤
+	■yurak URL(準備要求對方做SEO+放置GOOGLE 搜尋引擎+提供短網址)		
+
+
+2017/03/08開發紀錄
+	■特休
+	
+
+2017/03/08開發紀錄	
+	■SYWEB-V8-Workstation(Delta)
+		-在m_tabSub010000頁籤，已經放入對應元件，還未製作多國語系(準備從Delta為基礎改回V8-Workstation)
+	■20170309新改的API和人員計算式 (老闆傳過來的資料)
+
+
+2017/03/10開發紀錄
+	■SYWEB-V8-Workstation(Delta)
+		-在m_tabSub0101頁籤，已經放入對應元件，還未製作多國語系(準備從Delta為基礎改回V8-Workstation)
+	■CS_SQLite_blob(自行開發把圖片存入SQLite)
+		-目前實作使用OpenFileDialog+MemoryStream把圖片載入pictureBox中
+
+
+2017/03/13開發紀錄
+	■SYWEB-V8-Workstation(Delta)
+		-在m_tabSub010100頁籤，已經放入對應元件，還未製作多國語系(準備從Delta為基礎改回V8-Workstation)
+	■C# 存取SQLite所有參考基礎
+		-00_存取非blob資料
+		-01_存取blob資料
+
+
+2017/03/14開發紀錄
+	■SYWEB-V8-Workstation(Delta)
+		-單純新增兩個空白頁
+	■修正控制器規範 (邱+廖)
+		-20170324型號定義
+		-SY832_V8_Protocol_V0804_20170314
+		-SY832人數計算-2017-03-14
+
+
+2017/03/15開發紀錄
+	■SYWEB-V8-Workstation(Delta)
+		-在m_tabSub0102頁籤，已經放入對應元件，還未製作多國語系(準備從Delta為基礎改回V8-Workstation)
+
+
+2017/03/16開發紀錄
+	■SYWEB-V8-Workstation(Delta)
+		-在m_tabSub010200頁籤，已經放入對應元件，還未製作多國語系(準備從Delta為基礎改回V8-Workstation)
+
+
+2017/03/20開發紀錄
+	■SYWEB-V8-Workstation(Delta)
+		-新增m_tabSub0103頁籤
+
+
+2017/03/21開發紀錄
+	■SYWEB-V8-Workstation(Delta)
+		-在m_tabSub0103頁籤，已經放入對應元件，還未製作多國語系(準備從Delta為基礎改回V8-Workstation)
+
+
+2017/03/22開發紀錄
+	■SYWEB-V8-Workstation(Delta)
+		-新增m_tabSub0104頁籤
+	■V8_Protocol_Manual_V0805_20170322
+
+
+
+2017/03/23開發紀錄
+	■SYWEB-V8-Workstation(Delta)
+		-在m_tabSub0104頁籤，已經放入對應元件，還未製作多國語系(準備從Delta為基礎改回V8-Workstation)
+		
+		
+2017/03/24開發紀錄
+	■SYWEB-V8-Workstation(Delta)
+		-新增m_tabSub010400頁籤
+	■提供給業務做教育訓練用的DEMO執行檔有把主程式加密
+	■邱總_SY832人數計算-2017-03-24
+	
+
+2017/03/27開發紀錄
+	■SYWEB-V8-Workstation(Delta)
+		-在m_tabSub010400頁籤，已經放入對應元件，還未製作多國語系(準備從Delta為基礎改回V8-Workstation)
+		-調整(Delta)的UI部分，讓在中文模式下，顯示文字不要有隱藏
+	■SYWEB-V8-Workstation_EXE.rar	(提供給業務DEMO)
+	■邱總_SY832人數計算-2017-03-27
+
+
+2017/03/28開發紀錄
+	■SYWEB-V8-Workstation(Delta)
+		-新增m_tabSub0200頁籤
+
+
+2017/03/29開發紀錄
+	■SYWEB-V8-Workstation(Delta)
+		-在m_tabSub0200頁籤，已經放入對應元件，還未製作多國語系(準備從Delta為基礎改回V8-Workstation)
+
+
+2017/03/30開發紀錄
+	■SYWEB-V8-Workstation(Delta)
+		-在m_tabSub020000頁籤，已經放入對應元件，還未製作多國語系(準備從Delta為基礎改回V8-Workstation)
+
+
+2017/03/31開發紀錄
+	■SYWEB-V8-Workstation(Delta)
+		-新增m_tabSub020001、m_tabSub020002、m_tabSub020003頁籤
+		-修正m_tabSys的ckbSys_01要按照設定檔的紀錄改變顯示狀態
+		-修正m_tabSys的m_labSysTitle沒有跟個語系切換連動改變
+	■廖副
+		-新版通訊PDF
+		-新版韌體
+
+
+2017/04/05開發紀錄
+	■SYWEB-V8-Workstation(Delta)
+		-在m_tabSub020001頁籤，已經放入對應元件，還未製作多國語系(準備從Delta為基礎改回V8-Workstation)
+
+
+2017/04/06開發紀錄
+	■SYWEB-V8-Workstation(Delta)
+		-新增ColorCheckBox.cs+ColorRadioButton.cs並上傳到GITHUB備份
+		-修改語系檔目錄結構，原本語系檔跟EXE同一層，現在多一層language目錄
+		
+		
+2017/04/07開發紀錄
+	■NAS_LINUX開發資料
+
+
+2017/04/10開發紀錄
+	■SYWEB-V8-Workstation(Delta)
+		-在m_tabSub020001頁籤，使用ColorCheckBox.cs+ColorRadioButton.cs
+		-修正三塊(m_tabSub020001、m_tabSub000101、m_tabSub000100)通行模式中RadioButton只能選取一的的BUG(解決方法-多一層panel)
+		-在m_tabSub020002頁籤，已經放入元件，
+
+2017/04/11開發紀錄
+	■ControllerUtility(廖副提供)
+		-要我整合到Workstation中，提供Controller備份功能
+	■ControllerUtilityC# TCP連線SYRIS設備類別和測試程式碼片段 [自己從指紋機程式抓出來的]		
+	■SYWEB-V8-Workstation(Delta)
+		-在m_tabSub020002頁籤，已經放入對應元件，還未製作多國語系(準備從Delta為基礎改回V8-Workstation)
+	■00_V7閱讀筆記
+	■01_V7+V8閱讀筆記 
+
+2017/04/11開發紀錄
+	■C#和V8控制器連線並讀取基本SN_ID等訊息程式和文件
+		-CS_TCP_SYRIS_test
+		-01_V7+V8閱讀筆記 
+		-執行結果備份(20170412)
+		
+		
+2017/04/18開發紀錄
+	■C#存取HW 有關加密20170418測試備份
+		-BCB AES 中斷紀錄
+		-CB_calcrc16
+		-CS_crc16_CCITT_TABLE
+		-CS_TCP_SYRIS_test
+		-CRC16+AES程式開啟第一次傳命確定瑪一定會一樣的現象
+
+
+2017/05/08開發紀錄
+	■SYWEB-V8-Workstation(Delta) [大改UI完成]
+	■2017050853指紋機資料
+
+
+2017/05/09開發紀錄
+	■AES SBOX ECB_C				[GITHUB~備份 完整介紹AES的來龍去脈，並實作出有IV陣列和SBOX兩種演算法的C語言 AES演算法完整範例]
+	■CS_JAVA_AES_projrct		[GITHUB~單純備份C# 和 JAVA AES整合測試程式碼]
+	■20170509指紋機資料
+	
+2017/05/10開發紀錄
+	■20170510指紋機資料
+		◆00_小郭-HW接線
+		◆01_通訊協定
+		◆02_指紋機料(RD300)
+			-資料格式
+			-羅哥提供測試程式
+			-驅動
+		◆03_閱讀心得
+			-2_7_1 Fingerprint action 
+			-2_7_3 Fingerprint template
+		◆04_V8_Tool
+		◆05_C#_Code
+			-SYRIS_ControllerUtility_V8
+			-SYRIS_Fingerprint
+		◆06_分析
+			-20170510CB_SYFingerprintCapture_10315找不到設備與城市對照紀錄
+			-20170510手頭4台查詢紀錄
+		◆20170510政樟傳給我的羅哥API相關資料
+
+2017/05/11開發紀錄
+	■20170510政樟傳給我的羅哥API相關資料
+	■C# 分析複雜JSON(controllers)過程紀錄
+	■SYWEB-V8-Workstation(Delta)
+	■控制器API與UI對應筆記
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+
+
+
+			
