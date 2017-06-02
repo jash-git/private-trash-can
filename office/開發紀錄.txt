@@ -2194,25 +2194,61 @@ A.開發
 	■控制器API與UI對應筆記
 
 
+2017/05/12開發紀錄	
+	■C# 存取 MySQL 基本測試
+	■MySQL和SQLite 兩種資料庫 建立資料表匯入相關資料的SQL語法檔案(MySQL SQLite standard sql query file)
+	■C# RS2322電子秤(Electronic scales)
+	
+	
+2017/05/16開發紀錄
+	■SYWEB-V8-Workstation(Delta)
+		-把之前隱藏的頁籤開始加回來
 
 
+2017/05/17開發紀錄
+	■SYWEB-V8-Workstation(Delta)
+		-把之前隱藏的頁籤全部加上語系
 
 
+2017/05/18開發紀錄
+	■C# IP位址與數位（長整數）之間的轉換[從JAVA轉過來]
+	■SYWEB-V8-Workstation(Delta)
+		-加上 C# IP位址與數位（長整數）之間的轉換[從JAVA轉過來]
+		-加上基本連結羅哥API的CLASS
+		-加上動畫功能
+	■SYWEB-V8-Workstation-GUI-2017051601.bmpr
+	■參考專案
 
 
+2017/05/22開發紀錄
+	■SYWEB-V8-Workstation(Delta)
+		-新增兩個SQLITE的表
 
 
+2017/05/24開發紀錄
+	■SYWEB-V8-Workstation(Delta)
+		-控制器列表的文字搜尋+勾選過濾(電梯+控制器除外)功能完成
+	■SYRIS_Fingerprint
+		-確定目前版本(在旁邊PC+自己NB的WIN10)可以正常驅動，公司配的PC和羅哥PC不行
+		-SYFingerprintCapture-0.6.0.0002的DLL才可以 目前是DEBUG版
 
 
+2017/05/25開發紀錄
+	■SYRIS_Fingerprint
+		-可儲存CSV形式的DIB檔
 
+2017/05/31開發紀錄
+	■SYRIS_Fingerprint
+		-已經可以在無加密情況下傳送指紋，但還不能判斷是否傳送成功(等廖副修改韌體)
+		-另外也還無法顯示真實指紋圖 明天要開始找DIB顯示的方法
+		
 
-
-
-
-
-
-
-
+2017/06/02
+	■SYRIS_Fingerprint
+		-修改最後在指紋傳送作業選擇TreeView時的錯誤(PS此錯誤是C#當建立對話盒還未完成時又要被關閉所產生的系統錯誤，所以解決方法就是在程式碼中加上休息10ms)
+	■RD200_RD300完整資料
+		-包含通訊協定+RD300的TOOL原始碼+C#的RS232測試程式
+		
 
 
 
