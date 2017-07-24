@@ -1,1 +1,6 @@
 ﻿純C/C++_高斯消去法(Gaussian Elimination)解聯立方程式	~	https://goo.gl/igJAso
+PHP 關閉所有錯誤/警告提示 (PHP stop error/warning message)	~	https://goo.gl/A92Afs
+SQL 去除重複 不同[DISTINCT] / 分群[GROUP BY]	~	https://goo.gl/yzTSuH
+SQL INSERT INTO 不重複	~	https://goo.gl/cYsPqV
+使用PHP5建立標準的Soap service 並且利用PHP/C#進行呼叫測試的完整教學影片收藏[Creating Soap service and consume it in both php and c#] ~	https://goo.gl/JskS4L
+
