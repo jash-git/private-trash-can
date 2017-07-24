@@ -1,0 +1,1 @@
+﻿純C/C++_高斯消去法(Gaussian Elimination)解聯立方程式	~	https://goo.gl/igJAso
