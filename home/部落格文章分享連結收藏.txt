@@ -4,5 +4,6 @@ SQL 去除重複 不同[DISTINCT] / 分群[GROUP BY]	~	https://goo.gl/yzTSuH
 SQL INSERT INTO 不重複	~	https://goo.gl/cYsPqV
 使用PHP5建立標準的Soap service 並且利用PHP/C#進行呼叫測試的完整教學影片收藏[Creating Soap service and consume it in both php and c#] ~	https://goo.gl/JskS4L
 資料庫正規化- 通訊錄系統  範例	~	https://goo.gl/bA8szj
+C# 傳送JSON給PHP API並等待PHP長時間運算並接收運算結果	~	https://goo.gl/tHxJpi
 
 
