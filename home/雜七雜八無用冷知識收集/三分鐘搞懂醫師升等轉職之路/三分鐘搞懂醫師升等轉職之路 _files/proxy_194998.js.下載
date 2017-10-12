@@ -1,0 +1,168 @@
+﻿/*PARAMETERS*/
+/* GENERATION: 11:31:55-12, October 2017-194998 */
+
+// Old Script Domain
+innity_protocol = (location.protocol == "https:")?"https:":"http:";
+innity_domain   = (typeof innity_domain == "undefined") ? "http://media.innity.net/201709_21231/73462/" : innity_domain;
+innity_prem     = (typeof innity_prem == "undefined") ? innity_protocol + "//avn.innity.com" : innity_prem;
+innity_adnw     = (typeof innity_adnw == "undefined") ? innity_protocol + "//avp.innity.com" : innity_adnw;
+innity_exclk    = (typeof innity_exclk == "undefined") ? Math.floor((new Date().getTime() + 86400000) / 1000) : innity_exclk;
+// Campaign ID
+var campaignid_194998 = "21231";
+// Cache buster
+var cb_194998   = new Date().getTime();
+var auth_194998 = Math.random().toString(36).substring(7) + "-" + cb_194998;
+// Ad version
+var ver_194998 = "1";
+// Publisher
+if(typeof innity_pub == "undefined") {
+	innity_pub = c194998_getURLParam("pub") == "" ? "0" : c194998_getURLParam("pub");
+}
+// Zone
+var zone_194998 = 0;
+if (typeof innity_zone == "undefined") {
+	innity_zone = c194998_getURLParam("zone") == "" ? "0" : c194998_getURLParam("zone");
+}
+zone_194998 = innity_zone;
+// Reset zone
+innity_zone = 0;
+// Publisher Click URL
+var pcu_194998 = "";
+if(typeof innity_pcu != "undefined") {
+	pcu_194998 = innity_pcu;
+	pcu_194998 = encodeURIComponent(pcu_194998);
+	innity_pcu = "";
+}
+/* ClickTAG START */
+var clickTAG_194998 = innity_adnw + "/click/?campaignid=" + campaignid_194998 + "&adid=194998&zoneid=" + zone_194998 + "&pubid=" + innity_pub + "&pcu=" + pcu_194998 + "&auth=" + auth_194998 + "&url=https%3A%2F%2Fmineshine-superfriend.sp88.tw%3Futm_campaign%3D2017mineshine-superfriend%26utm_medium%3Dinnity%26utm_source%3Dbanner%26utm_content%3Dkv_rotation";
+/* ClickTAG END */
+// Script window level
+var level_194998 = "parent.parent";
+// Main file source
+ad_194998 = {};
+ad_194998.id     = "innity_adslot_194998";
+ad_194998.adid   = "194998";
+ad_194998.width  = 300;
+ad_194998.height = 250;
+ad_194998.base   = innity_domain;
+ad_194998.src    = innity_domain + "C194998_1.jpg";
+// Tracking
+var ref_194998 = "0";
+var InnityUtil_194998 = {_keyStr:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",encode:function(input){var output="";var chr1,chr2,chr3,enc1,enc2,enc3,enc4;var i=0;input=InnityUtil_194998._utf8_encode(input);while(i<input.length){chr1=input.charCodeAt(i++);chr2=input.charCodeAt(i++);chr3=input.charCodeAt(i++);enc1=chr1>>2;enc2=((chr1&3)<<4)|(chr2>>4);enc3=((chr2&15)<<2)|(chr3>>6);enc4=chr3&63;if(isNaN(chr2)){enc3=enc4=64;}else if(isNaN(chr3)){enc4=64;}output=output+this._keyStr.charAt(enc1)+this._keyStr.charAt(enc2)+this._keyStr.charAt(enc3)+this._keyStr.charAt(enc4);}return output;},_utf8_encode:function(string){string=string.replace(/\r\n/g,"\n");var utftext="";for(var n=0;n<string.length;n++){var c=string.charCodeAt(n);if(c<128){utftext+=String.fromCharCode(c);}else if((c>127)&&(c<2048)){utftext+=String.fromCharCode((c>>6)|192);utftext+=String.fromCharCode((c&63)|128);}else{utftext+=String.fromCharCode((c>>12)|224);utftext+=String.fromCharCode(((c>>6)&63)|128);utftext+=String.fromCharCode((c&63)|128);}}return utftext;}}
+try {
+	ref_194998 = InnityUtil_194998.encode(top.document.URL.replace("?", "%3F"));
+}catch(e) {
+	ref_194998 = InnityUtil_194998.encode(document.referrer.replace("?", "%3F"));
+}
+/**
+ * @requires BROWSER
+ */
+function browser_194998() {
+	this.ua         = " " + navigator.userAgent.toLowerCase();
+	this.av         = parseInt(navigator.appVersion);
+	this.isWin      = (this.ua.indexOf("win") >= 0);
+	this.isWinVista = (this.ua.indexOf("windows nt 6.0") >= 0);
+	this.isMac      = (this.ua.indexOf("mac") >= 0);
+	this.isLinux    = (this.ua.indexOf("linux") >= 0);
+	this.isIE       = (this.ua.indexOf("msie") >= 0) || (Object.hasOwnProperty.call(window, "ActiveXObject") && !window.ActiveXObject);
+	this.isNav4     = ((this.ua.indexOf("mozilla") >= 0) && (this.ua.indexOf("compatible") == -1) && (this.av < 5));
+	this.isFirefox  = (this.ua.indexOf("firefox") >= 0);
+	this.isOpera    = (this.ua.indexOf("opera") > 0);
+	if (this.isOpera) {
+		this.isIE = false;
+	}
+	this.isSafari    = (this.ua.indexOf("applewebkit") > 0);
+	this.isChrome    = (this.ua.indexOf("chrome") > 0);
+	this.isKonqueror = (this.ua.indexOf("konqueror") > 0);
+	this.isGecko     = (this.ua.indexOf("gecko/") > 0);
+	this.isCamino    = (this.ua.indexOf("camino/") > 0);
+	this.IEVersion   = (this.ua.indexOf("msie") + 1 ? parseFloat(this.ua.split("msie")[1]) : 999);
+	this.isIE5up     = (!this.isIE) ? true : ((this.IEVersion > 5) ? true : false);
+	this.isIE6up     = (!this.isIE) ? true : ((this.IEVersion > 6) ? true : false);
+	this.isIE9up     = (!this.isIE) ? true : ((this.IEVersion > 9) ? true : false);
+	// iOS
+	this.isIOS = (/(iphone|ipod|ipad)/i.test(this.ua));
+	try {
+		this.IOSVersion = (this.ua).match(/OS (\d+)_(\d+)_?(\d+)?/i);
+		this.IOSVersion = (this.isIOS && this.IOSVersion) ? parseFloat(parseInt(this.IOSVersion[1], 10) + "." + parseInt(this.IOSVersion[2], 10) + "." + parseInt(this.IOSVersion[3] || 0, 10)) : 999;
+	} catch(e) {
+		this.IOSVersion = 1;
+	}
+	// Android
+	this.isAndroid = (/(android)/i.test(this.ua));
+	try {
+		this.AndroidVersion = (this.isAndroid) ? parseFloat(this.ua.slice(this.ua.indexOf("android") + 8)) : 999;
+	} catch(e) {
+		this.AndroidVersion = 999;
+	}
+	// Facebook Webview
+	this.isMobileWebView = (/(fb4a|fbios)/i.test(this.ua));
+	// Canvas Tag Support
+	try {
+		this.supportCanvas = ((!!document.createElement("canvas").getContext) ? true : false);
+	} catch(e) {
+		this.supportCanvas = false;
+	}
+	// Video Tag Support
+	try {
+		this.supportVideo = ((!!document.createElement("video").canPlayType) ? true : false);
+	} catch(e) {
+		this.supportVideo = false;
+	}
+	// HTML5 support
+	this.supportHTML5 = (this.supportCanvas && this.supportVideo && (!(this.isIE && this.IEVersion < 9))) ? true : false;
+}
+var mybrowser_194998 = new browser_194998();
+/** END */
+if(window.innityapps_appID) {
+	ref_194998 = InnityUtil_194998.encode(window.innityapps_appID.replace("?", "%3F"));
+}
+var beacon_194998 = innity_adnw + "/view/?campaignid=" + campaignid_194998 + "&adid=194998&zoneid=" + zone_194998 + "&pubid=" + innity_pub + "&auth=" + auth_194998 + "&ref=" + ref_194998 + "&cb=" + cb_194998;
+if(window.innityapps_appIDFA) {
+	beacon_194998 += "&idfa=" + encodeURIComponent(window.innityapps_appIDFA);
+}
+/*ENDPARAMETERS*/
+// Image tag
+var imageTag_194998 = '<a href="' + clickTAG_194998 + '" target="_blank"><img style="width:' + ad_194998.width + 'px;height:' + ad_194998.height + 'px;border:0px;" id="' + ad_194998.id + '" src="' + ad_194998.src + '" width="' + ad_194998.width + '" height="' + ad_194998.height + '" border="0" alt="Click Here" title="Click Here"></a>';
+function c194998_buildAd() {
+	// Write innity_adslot if not exist
+	if(!ad_194998.innity_adslot) {
+		ad_194998.innity_adslot      = document.createElement("div");
+		ad_194998.innity_adslot.id   = ad_194998.id;
+		document.write(ad_194998.innity_adslot.outerHTML);
+	}
+	ad_194998.innity_adslot = c194998_getObj(ad_194998.id);
+	ad_194998.innity_adslot.style.display  = "inline-block";
+	ad_194998.innity_adslot.style.width    = ad_194998.width + "px";
+	ad_194998.innity_adslot.style.height   = ad_194998.height + "px";
+	ad_194998.innity_adslot.style.overflow = "hidden";
+	// Write Ad
+	ad_194998.innity_adslot.innerHTML = imageTag_194998;
+}
+/**
+ * @requires MISC FUNCTIONS
+ */
+// Object catcher
+function c194998_getObj(obj) {
+	return document.getElementById(obj);
+}
+// Get URL Parameters
+function c194998_getURLParam(param) {
+	var strHref = self.location.href;
+	if (strHref.indexOf("?") > -1) {
+		return decodeURIComponent((new RegExp("[?|&]" + param + "=" + "([^&;]+?)(&|#|;|$)").exec(strHref) || [, ""])[1].replace(/\+/g, "%20")) || "";
+	}
+	return "";
+}
+/** END */
+// Build Ad, Tracking & Event handling
+c194998_buildAd();
+(new Image()).src = beacon_194998;
+/**
+ * @requires THIRDPARTY
+ */
+/*THIRDPARTY*/
+(new Image()).src = "https://secure-gl.imrworldwide.com/cgi-bin/m?ci=ent1237351980&am=3&ep=1&at=view&rt=banner&st=image&ca=cmp901095&cr=crv2073608&pc=plc36281785&r=" + cb_194998 + "";
+/*ENDTHIRDPARTY*/
+/** END */
+
