@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-Hant" lang="zh-Hant">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>404 - 找不到網頁或檔案</title>
+    <meta http-equiv="refresh" content="5;url=/" />
+    <style type="text/css">
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        #main {
+            width: 665px;
+            height: 280px;
+            margin:0 auto;
+            margin-top: 150px;
+        }
+    </style>
+</head>
+<body>
+    <div id="main">
+        <img src="/errorpages/images/404error.jpg" width="665" height="280" border="0" alt="404 Not Found" usemap="#mainmap" />
+    </div>
+    <map name="mainmap" id="mainmap">
+        <area shape="rect" coords="353,179,444,204" href="/" alt="回首頁" />
+    </map>
+</body>
+</html>
