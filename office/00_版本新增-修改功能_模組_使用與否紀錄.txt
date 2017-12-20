@@ -1,0 +1,8 @@
+﻿日期			版本			內容[啟用測試於否]
+2017/12/20		0.1.1.5			01.新增CRC16[還未使用]
+								02.新增AES模組[還未使用]
+								03.已經可以正確顯示反查授權結果 OK
+								04.修改CS2PHPrestfulapi.RESTfulAPI_postBody 讓他可以支援 chunked 收值 OK
+								05.使用CS2PHPrestfulapi.RESTfulAPI_postBody測試簡易SQL指令呼叫 OK	PS [String Data=CS2PHPrestfulapi.RESTfulAPI_postBody("http://192.168.1.68:24408/syris/v8/dbservice", "{\"sql_statement\": \"SELECT * FROM Variables;\"}",true);]
+								
+								
