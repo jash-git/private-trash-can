@@ -5,4 +5,11 @@
 								04.修改CS2PHPrestfulapi.RESTfulAPI_postBody 讓他可以支援 chunked 收值 OK
 								05.使用CS2PHPrestfulapi.RESTfulAPI_postBody測試簡易SQL指令呼叫 OK	PS [String Data=CS2PHPrestfulapi.RESTfulAPI_postBody("http://192.168.1.68:24408/syris/v8/dbservice", "{\"sql_statement\": \"SELECT * FROM Variables;\"}",true);]
 								
+2017/12/21		0.1.1.6			01.單純PC DB增加SYDM資料表+controller資料表增加`sydm_id` int(11) NOT NULL DEFAULT '0'欄位
+								02.修正Models.csv把電梯 128 改成 1 
+								
+2017/12/22		0.1.1.7			01.在FileLib.CS增加除錯(DEBUG)專用 log函式庫
+								02.人和車輛UI在立即配發卡片時利用程式手法直接顯示對應持有人名稱(原本要DB有資料才關聯出來)
+								03.修正未在線的控制器匯入無法顯示問題
+								
 								
