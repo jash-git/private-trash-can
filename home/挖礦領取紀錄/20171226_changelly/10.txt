@@ -1,0 +1,8 @@
+YOU HAVE SENT:
+Amount:0.2 XMR
+To changelly address:	482M3n5jjLRAKhRNmhUVQqCTN4HtqnkDHEzBpSWr7goM5ewteFo4TycfHzpC1dbViw9yiEetfkj53TP3TnYDPwp8QWWAKD2
+Hash:					0e04b40258cbb1808a24db0c1145ba57dd39586fb51ce2acc9daacc8358a60ce
+
+YOU WILL GET:
+Amount:0.0042726 BTC
+To address:				1MTMcotKqvVyYu1XyHszpgq6hdbCvpyXys
