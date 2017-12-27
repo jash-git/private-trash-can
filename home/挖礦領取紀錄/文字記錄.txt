@@ -1,0 +1,19 @@
+﻿2017/12/26從門羅幣XMR變成比特幣BTC全紀錄[PS內涵匯率損失介紹]
+
+
+資料來源:
+https://coinhive.com/
+https://mymonero.com/
+https://zt.coinmill.com/XMR_calculator.html
+https://changelly.com/
+https://www.bitoex.com/
+
+
+01.coinhive 達到設定金額(0.5)自動轉帳 [無須額外費用] 到指定 mymonero (完整入賬畫面如下圖所示)
+
+02.mymonero確定收到0.50040307396XMR轉出0.2XMR 要付出0.026XMR手續費
+
+03.changelly轉換成為比特幣0.00460191BTC 但是實際上進入bitoex帳戶為 0.00337260BTC 所以也被扣了 0.00122931BTC手續費(完整交易畫面如下)
+
+
+結論:整著交易總損失的BTC=0.00122931+0.00046396=0.00169327BTC[NT814.32]
