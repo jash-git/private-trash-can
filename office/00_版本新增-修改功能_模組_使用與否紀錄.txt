@@ -120,6 +120,15 @@
 2018/01/22		0.1.3.8			01.製作record_status.csv[動態匯入使用]
 								02.在MYSQL建立record_status資料表
 								03.撰寫把record_status.csv匯入資料庫中
+
+2018/01/23		0.1.3.9			01.增加controller_io_record 資料表到DB中
+								02.寫出對應匯入測試資料SQL
+								03.寫出撈出基本報表語法
+									SELECT u.name AS user_name,c.name AS car_name,cd.display AS card_name,cir.card_unique_identifier AS card_code,rs.name AS state,cir.timestamp AS time
+									FROM controller_io_record AS cir 
+									LEFT JOIN card AS cd ON cir.card_unique_identifier = cd.card_code 
+									LEFT JOIN record_status AS rs ON cir.status = rs.id 
+									LEFT JOIN card_for_user_car AS cfuc ON cfuc.card_id = cd.id 
+									LEFT JOIN user AS u ON u.id = cfuc.user_id 
+									LEFT JOIN car AS c ON c.id = car_id 
 								04.
-								05.
-								06.
