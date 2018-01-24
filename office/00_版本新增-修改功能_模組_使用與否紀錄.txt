@@ -131,4 +131,24 @@
 									LEFT JOIN card_for_user_car AS cfuc ON cfuc.card_id = cd.id 
 									LEFT JOIN user AS u ON u.id = cfuc.user_id 
 									LEFT JOIN car AS c ON c.id = car_id 
-								04.
+								
+2018/01/23		0.1.4.0			01.限定查詢卡片的Record SQL	[100%]
+									00.沒有限定卡片-不用寫
+									01.限定直接輸入卡號- 
+										WHERE cir.card_unique_identifier = '判斷資料';
+									02.限定某人的所有卡片-
+										WHERE cir.card_unique_identifier IN (SELECT cd.card_code AS card_code FROM card_for_user_car AS cfuc,card AS cd WHERE (cd.id=cfuc.card_id) AND (cfuc.user_id = '判斷資料') );
+									03.限定下拉式選單 單張卡號-
+										WHERE cir.card_unique_identifier IN (SELECT card_code FROM card WHERE id='判斷資料');
+									04.限定部門下的所有卡片-
+										WHERE cir.card_unique_identifier IN (SELECT cd.card_code AS card_code FROM card AS cd,department_detail AS dd,card_for_user_car AS cfuc WHERE (cfuc.card_id=cd.id) AND ((dd.user_id=cfuc.user_id) OR (dd.car_id=cfuc.car_id)) AND (dd.dep_id='判斷資料'))
+									05.限定部門下的[下拉式選單 單張卡號]-
+										WHERE cir.card_unique_identifier IN (SELECT card_code FROM card WHERE id='判斷資料');
+									06.限定部門+限定某人的所有卡片-
+										WHERE cir.card_unique_identifier IN (SELECT cd.card_code AS card_code FROM card_for_user_car AS cfuc,card AS cd WHERE (cd.id=cfuc.card_id) AND (cfuc.user_id = '判斷資料') );
+									07.限定部門+限定某人+限定單張卡號-
+										WHERE cir.card_unique_identifier IN (SELECT card_code FROM card WHERE id='判斷資料');
+										
+------------------------------------[授權65%][報表35%]
+
+										
