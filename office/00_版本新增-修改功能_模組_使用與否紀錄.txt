@@ -179,5 +179,10 @@
 								04.修改DB架構
 								05.匯入sycg_command
 
-								
-						
+2018/02/01		0.1.4.6			01.修改DB架構
+								02.製作SYDM列表UI-擺放元件+變數命名
+								03.製作SYDM列表UI-製作多國語系
+								04.從 DB 設定 SYCG Domain URL
+								05.製作SYDM列表UI-製作SYDM匯入功能
+								06.製作SYDM列表UI-新增SYDM功能
+								07.製作SYDM列表UI-編輯SYDM功能
