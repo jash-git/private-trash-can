@@ -186,3 +186,12 @@
 								05.製作SYDM列表UI-製作SYDM匯入功能
 								06.製作SYDM列表UI-新增SYDM功能
 								07.製作SYDM列表UI-編輯SYDM功能
+								
+2018/02/02		分析Delta工具異常畫面問題
+					結論1: 沒給SN我的SQL 搜尋會出現重複資料，這一部分只要改SQL就可以防堵沒給SN重複顯示 -> GROUP BY c.id
+					結論2: 沒給SN 我會無法取得	sydm 的 id值 也不能用我的程式來做後續設定+控制
+					
+2018/02/02		0.1.4.7			01.製作SYDM編輯UI-擺放元件+變數命名
+								02.製作SYDM編輯UI-製作多國語系
+								03.製作SYDM編輯UI-串接本地端資料庫
+								04.製作SYDM編輯UI-串接增加SYDM API+ReLoad SYDM API
