@@ -195,3 +195,12 @@
 								02.製作SYDM編輯UI-製作多國語系
 								03.製作SYDM編輯UI-串接本地端資料庫
 								04.製作SYDM編輯UI-串接增加SYDM API+ReLoad SYDM API
+								
+2018/02/05		0.1.4.8			01.製作SYDM編輯UI-串接修改SYDM API+ReLoad SYDM API
+								02.
+
+
+
+
+
+								
