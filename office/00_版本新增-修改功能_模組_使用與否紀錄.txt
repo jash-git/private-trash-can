@@ -197,10 +197,14 @@
 								04.製作SYDM編輯UI-串接增加SYDM API+ReLoad SYDM API
 								
 2018/02/05		0.1.4.8			01.製作SYDM編輯UI-串接修改SYDM API+ReLoad SYDM API
-								02.
+								02.開會確定 匯入控制器功能的 KEY值從原本的SN->IP+PORT+MODE
 
+0.1.4.9			01.修改控制器匯入邏輯
+				02.修正Getsy_dm_Controller_id 函數
 
-
+				
+				
+------------------------------------[授權65%][報表75%][SYDM 管理UI+API呼叫 100%]
 
 
 								
