@@ -215,7 +215,7 @@
 									II.修正呼叫點相關
 								04.修正匯入電梯控制器時門區數量必須利用程式指定
 				
-2018/02/06		0.1.5.0			01.匯入控制器門區部分DBBUG修正-只有在非電梯控制器下自動增加門區
+2018/02/07		0.1.5.0			01.匯入控制器門區部分DBBUG修正-只有在非電梯控制器下自動增加門區
 								02.匯入控制器門區部分DBBUG修正-只有在電梯控制器下自動增隱藏樓層
 								03.製作TOOL模式移除報表相依元件SOP
 									I.複製目前最後版本程式專案檔餅開啟編輯
@@ -228,7 +228,39 @@
 								04.修正門區設定值與API定義一致(EX:開放通行與禁止通行，...)
 									I.DB門區UI紀錄[0都不選 1開放 2禁止] <-> API(Set Door Setup)enabled[0: 停用，1: 啟用。] ~ API->DB(1->1,other->2);DB->API(1->1,other->0)
 									II.密碼字串補F機制
-								05.
+
+*****************
+PS-之後開始加註
+『○』-SYRIS 
+『●』-Delta
+*****************
+
+2018/02/08		0.1.5.1			01.輸出 Delta TOOL 給政璋『●』
+								02.製作 V8 workstation_delta_release note.txt『●』
+------------------------------------輸出Delta TOOL								
+								03.新增SYDM授權用JSON類別-ControllerAuthorization.cs
+								04.IP轉換函數32位元版-允許負數[符合SYDM-API規範]
+									測試碼:
+										String StrIP = "192.168.10.200";
+										int intIP = 0;
+										intIP = HW_Net_API.ip2long32(StrIP, true);
+										StrIP = HW_Net_API.long2ip32(intIP, true);
+										StrIP = "127.0.0.200";
+										intIP = HW_Net_API.ip2long32(StrIP, true);
+										StrIP = HW_Net_API.long2ip32(intIP, true);
+										StrIP = "1.0.0.0";
+										intIP = HW_Net_API.ip2long32(StrIP, true);
+										StrIP = HW_Net_API.long2ip32(intIP, true);
+										StrIP = "255.255.255.255";
+										intIP = HW_Net_API.ip2long32(StrIP, true);
+										StrIP = HW_Net_API.long2ip32(intIP, true);								
+								05.修正所有API內有關IP的運算公式變成32位元版-允許負數	『○』『●』
+								06.20180208-新舊controller_io_record比較整理 [還未修改本地DB]
+								07.
+								
+								
+								
+								
 								
 								
 								
