@@ -290,11 +290,47 @@ PS-之後開始加註
 										UPDATE controller_io_record SET card_unique_identifier='0000000000001005' WHERE card_unique_identifier='00803118C2364E04';# 影響了 294 行。
 									III.修正SQL語法預設用卡號+時間排序 ORDER BY cir.card_unique_identifier,cir.timestamp
 										SELECT u.name AS user_name,c.name AS car_name,cd.display AS card_name,cir.card_unique_identifier AS card_code,rs.name AS state,cir.timestamp AS time FROM controller_io_record AS cir LEFT JOIN card AS cd ON cir.card_unique_identifier = cd.card_code LEFT JOIN record_status AS rs ON cir.status = rs.id LEFT JOIN card_for_user_car AS cfuc ON cfuc.card_id = cd.id LEFT JOIN user AS u ON u.id = cfuc.user_id LEFT JOIN car AS c ON c.id = car_id ORDER BY cir.card_unique_identifier,cir.timestamp;
-								05.User資料表目前的差異整理
 								
+2018/02/11		20180211-home note.txt								
+								authorization_data-calculate_saveDB()
+									回圈01-依序取出卡資料
+										回圈02-依序取出門資料
+											取出DB-先前派送 [db_AnsData]
+										
+									ANS->運算後的結果	門VS卡
+
+								==========================================
+
+								authorization_data-sendData2HW()
+									找出第一筆狀態非0的資料 並記錄卡ID+門ID
+									從門ID找出對應控制器[controller_model,Strcontroller_sn,Strcontroller_IP,Strconnetction_mode]
+										在從控制器找出所有下面的門ID
+											在透過所有門ID(N個)+卡ID(1個) 找出有記錄的『門VS卡((N個))』的授權資料-AL_AnsData
+											
+									未實做  把『門(N個)VS卡』-> 『控(1個)VS卡』									
 								
+2018/02/12		0.1.5.3			01.增加sendData2HW()中controller_Port的抓取-呼叫Getsy_dm_Controller_id需要使用
+								02.sendData2HW()中增加門參整合用變數
+								03.sendData2HW()中增加計算那些門或那些樓層可通行的flag
+								04.把資料從『門(N個)VS卡』-> 『控(1個)VS卡』
+								05.AnsAuthorization指定SYDM控制器ID-呼叫Getsy_dm_Controller_id					
+
+2018/02/13		0.1.5.4			01.sendData2HW()中增加抓取卡片內碼+卡片display+卡片pin_code+卡片效期+卡片APB
+								02.AnsAuthorization指定APB參數
+								03.AnsAuthorization指定display_text參數
+								04.AnsAuthorization指定pin_code參數
+								05.AnsAuthorization指定valid_start_timestamp+valid_endle_timestamp參數
+								06.增加ControllerDelAuthorization類別
+								07.授權物件轉JSON字串
+								08.授權JSON字串存檔(紀錄最後一次)『○』
+								09.修改sendData2HW()中搜尋還未派送的授權資料
+								10.SYDM控制器授權API呼叫『○』
+								11.修正DB派送授權的紀錄狀態語法讓DB支援派送失敗也可復原狀態值
 								
+
+
 								
+								User資料表目前的差異整理
 								修正匯入控制器門數啟用數量要和SYDM一致
 
 			
