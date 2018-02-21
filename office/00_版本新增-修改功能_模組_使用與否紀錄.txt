@@ -328,10 +328,47 @@ PS-之後開始加註
 								11.修正DB派送授權的紀錄狀態語法讓DB支援派送失敗也可復原狀態值
 								
 2018/02/14		0.1.5.5			01.修改EndPoint,程式內所有 /syris/v8字串替換成/syris/sydm	『○』『●』
-								
+																
+2018/02/20		用Uniform Server模擬 遠端DB SERVER
 
+2018/02/21		0.1.5.6			01.增加資料庫欄位名稱替換類別
+								02.在MySQL.cs中的External_MySQL類別中增加
+								03.修正本地端資料庫結構-user表增加emp_title欄位『○』
+								04.在MySQL.cs中的External_MySQL類別中增加 DownloadDBTable()/UploadDBTable()函數 『○』
+									測試用程式碼:
+										External_MySQL m_ExMySQL = new External_MySQL();
+										bool blnAns = m_ExMySQL.CheckMySQL("127.0.0.1", "3306", "root", "usbw");
+										blnAns = m_ExMySQL.DownloadDBTable("controller_io_record", "REPLACE INTO", true);
+										blnAns = m_ExMySQL.DownloadDBTable("card", "REPLACE INTO", true);
+										blnAns = m_ExMySQL.UploadDBTable("card", "REPLACE INTO", true);
+										
+										m_ExMySQL.m_ALReplaceField.Clear();
+										ReplaceField RF_Data01 = new ReplaceField();
+										RF_Data01.StrOldField = "`name`, `alias_name`";
+										RF_Data01.StrNewField = "`real_name`, `alias_name`";
+										m_ExMySQL.m_ALReplaceField.Add(RF_Data01);
+										ReplaceField RF_Data00 = new ReplaceField();
+										RF_Data00.StrOldField = "`user_name`, `password`";
+										RF_Data00.StrNewField = "`name`, `password`";
+										m_ExMySQL.m_ALReplaceField.Add(RF_Data00);
+										blnAns = m_ExMySQL.UploadDBTable("user", "REPLACE INTO", true);
+
+										m_ExMySQL.m_ALReplaceField.Clear();
+										RF_Data01.StrOldField = "`real_name`, `alias_name`";
+										RF_Data01.StrNewField = "`name`, `alias_name`";
+										m_ExMySQL.m_ALReplaceField.Add(RF_Data01);
+										RF_Data00.StrOldField = "`name`, `password`";
+										RF_Data00.StrNewField = "`user_name`, `password`";
+										m_ExMySQL.m_ALReplaceField.Add(RF_Data00);
+										blnAns = m_ExMySQL.DownloadDBTable("user", "REPLACE INTO", true);
+								05.Remote/Local DB 人員匯入/匯出 『○』
+								06.User資料匯入時會沒有填生日的狀況BUG修正 『○』
 								
-								User資料表目前的差異整理
+								
+								
+								
+								
+								
 								修正匯入控制器門數啟用數量要和SYDM一致
 
 			
