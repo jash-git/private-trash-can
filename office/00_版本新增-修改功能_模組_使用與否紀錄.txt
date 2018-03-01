@@ -384,17 +384,36 @@ PS-之後開始加註
 									按照命令名稱轉換成命令數字值
 									設定SYDM編號
 									
-2018/02/26		0.1.6.0			01.開發呼叫SYCG API函數
+2018/02/27		0.1.6.0			01.開發呼叫SYCG API函數
 									產出對應輸入參數框架
 									執行呼叫API
 									API呼叫結果拆解框架
 ------------------------------------[Remote/Local DB 資料表資料交換功能 100%][控制器編輯UI 增加SYDM選項元件 100%][開發呼叫SYCG API函數 50%]
 
+2018/02/28		0.1.6.1			01.SYDM和SYCG API呼叫並存實現『○』
+									SYCG_setSYCGDomainURL,setAPIDomainURL,OK
+									SYDM_GET_CONTROLLER,getController,OK
+									SYDM_GET_CONTROLLER_CONNECTION,getController_Connection,OK
 
-
-
-
-
+2018/03/01		0.1.6.2			01.SYDM和SYCG API呼叫並存實現『○』
+									SYDM_GET_CONTROLLER_ACTIVE,getController_Active,OK
+									SYDM_SET_CONTROLLER_ACTIVE,setController_Active,OK
+									SYDM_LOAD_CONTROLLER,load_All_Controller,OK
+									SYDM_SET_CONTROLLER_APB_AB_DOOR,setController_Apb_Ab_Door,OK
+									SYDM_SET_CONTROLLER_HOLIDAY,setController_Holiday,OK
+									SYDM_SET_CONTROLLER_SETUP,setController_Setup,OK
+									SYDM_SET_CONTROLLER_CONNECTION,setController_Connection,OK
+									SYDM_ADD_CONTROLLER,add_Controller,OK
+									SYDM_GET_CONTROLLER_STATUS,getController_Status,OK
+									SYDM_GET_DOOR_TOPOLOGY,getDoorTopology,OK
+									SYDM_GET_DOOR_SECURITY,getDoorSecurity,OK
+									SYDM_GET_DOOR_SETUP,getDoorSetup,OK
+									SYDM_GET_DOOR_TIME_PERIOD_CONTROL,getDoorTimePeriodControl,OK
+									SYDM_GET_DOOR_AUTO_OPEN_TIME_PERIOD_CONTROL,getDoorAutoOpenTimePeriodControl,OK
+									SYDM_SET_DOOR_SECURITY,setDoorSecurity,OK
+									SYDM_SET_DOOR_SETUP,setDoorSetup,OK
+									SYDM_SET_DOOR_TIME_PERIOD_CONTROL,setDoorTimePeriodControl,OK
+									SYDM_SET_DOOR_AUTO_OPEN_TIME_PERIOD_CONTROL,setDoorAutoOpenTimePeriodControl,OK
 
 
 
