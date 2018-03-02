@@ -431,7 +431,7 @@ PS-之後開始加註
 									台達TOOL
 									SYDM
 									SYCG
-								再檢查一次DB 匯入/匯出 TABLE 清單
+								再檢查一次DB 匯入/匯出 TABLE 清單+帳密是否正確
 
 								
 								
