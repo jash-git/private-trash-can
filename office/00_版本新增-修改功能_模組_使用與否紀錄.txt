@@ -421,17 +421,27 @@ PS-之後開始加註
 								04.SYCG模式下DB匯入匯出功能UI實作『○』
 								
 
-2018/03/0X		0.1.6.4			匯入控制器在SYCG模式下要指定SYDM變數
-								把傳送StreamWriter writer = new StreamWriter(request.GetRequestStream(), Encoding.ASCII); 改成UTF8
-								製作SYCG傳送模式
+2018/03/04		0.1.6.4			01.再檢查一次DB 匯入/匯出 TABLE 清單+帳密是否正確
+								02.匯入控制器在SYCG模式下要紀錄指定SYDM變數-m_ALSYDMid 『○』
+								
+2018/03/05		0.1.6.5			01.SYCG模式下匯入控制器API整合測試完成『○』
+								02.SYCG模式下編輯控制器API整合測試完成『○』
+								03.SYCG模式下新增控制器API整合測試完成『○』
+								04.SYCG模式下載入門區參數API整合測試完成『○』
+								05.SYCG模式下寫入門區參數API整合測試完成『○』
+								06.SYCG授權傳送模式『○』
 									新增一個ArrayList紀錄CONTROLLER的SYDM ID
-									製作雙模式切換(SYDM/SYCG)
+								07.SYCG模式下授權參數API整合測試完成『○』
+								08.DB匯出到IP-78測試
+
+								
+								CS2PHPrestfulapi 傳送全部改為UTF8
 								傳送授權結束後要有對話盒提示
 								產生三個版本
 									台達TOOL
 									SYDM
 									SYCG
-								再檢查一次DB 匯入/匯出 TABLE 清單+帳密是否正確
+								
 
 								
 								
