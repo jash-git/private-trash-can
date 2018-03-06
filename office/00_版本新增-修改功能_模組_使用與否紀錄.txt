@@ -434,8 +434,10 @@ PS-之後開始加註
 								07.SYCG模式下授權參數API整合測試完成『○』
 								08.DB匯出到IP-78測試
 
+2018/03/06		0.1.6.6			01.CS2PHPrestfulapi 傳送全部改為UTF8 『○』
+									使用[C# 傳送JSON給PHP API並等待PHP長時間運算並接收運算結果]模擬確定中文沒亂碼
+								02.建立UploadDB_door()和 DownloadDB_door() 為了讓上傳資料符合HINO原先規劃『○』
 								
-								CS2PHPrestfulapi 傳送全部改為UTF8
 								傳送授權結束後要有對話盒提示
 								產生三個版本
 									台達TOOL
