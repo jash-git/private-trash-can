@@ -516,19 +516,26 @@ SYDM匯入變成有等待動畫[100%]
 								
 2018/03/16		0.1.7.5			01.修改資料庫結構 `controller_io_record` 『○』『●』
 								02.修正報表主選單頁面語系切換BUG 『○』
-								03.下載指定時間報表資料 『○』
+								03.下載指定時間報表資料 『○』(沒指定時間就會全部下載)
 									https://stackoverflow.com/questions/935556/mysql-dump-by-query
 									http://blog.csdn.net/xin_yu_xin/article/details/7574662
 									https://stackoverflow.com/questions/26261670/mysqldump-with-where-clause-is-not-working
 									實際測試會動語法:
 										mysqldump.exe -h127.0.0.1 -P3307 -uroot -pusbw -t -e -q --complete-insert --extended-insert=FALSE --default-character-set=utf8 --hex-blob v8_workstation controller_io_record --where="537811566<= timestamp AND timestamp<=574445166" > controller_io_record_00.sql
 										mysqldump.exe -h127.0.0.1 -P3307 -uroot -pusbw -t -e -q --complete-insert --extended-insert=FALSE --default-character-set=utf8 --hex-blob v8_workstation controller_io_record --where="546955202<= timestamp AND timestamp<=571255622" > controller_io_record_01.sql
-										pause	
-								APB管理要分成SYDM/SYCG兩種模式
+										pause
+								04.修改資料庫結構 `user` 資料表的 emp_title 拿掉了 『○』『●』
+								05.APB管理要分成SYDM/SYCG兩種模式
+									增加SYDM選擇元件
+									SYDM 選擇元件資料初始化
+									SYCG/SYDM模式下SYDM ID綁定程式
+									
+								
+								控制器為TCP SERVER要顯示為預設
+								所有表格支援多國語系(40%)
 								授權多一狀態 是否已傳送
 								DB IP/DB PORT 文字修改	
-								區域要有階層特性，左側DOOR要能停用
-								控制器為TCP SERVER要顯示為預設																	
+								區域要有階層特性，左側DOOR要能停用											
 								進階門區的設定UI新增								
 								人員工號改必填
 								二代證專用機串接
