@@ -514,20 +514,21 @@ SYDM匯入變成有等待動畫[100%]
 									撰寫door_extend表中access_den欄位的相關程式碼
 --------------------------------輸出Delta TOOL									
 								
-								下載指定時間報表資料
+2018/03/16		0.1.7.5			01.修改資料庫結構 `controller_io_record` 『○』『●』
+								02.修正報表主選單頁面語系切換BUG 『○』
+								03.下載指定時間報表資料 『○』
 									https://stackoverflow.com/questions/935556/mysql-dump-by-query
 									http://blog.csdn.net/xin_yu_xin/article/details/7574662
 									https://stackoverflow.com/questions/26261670/mysqldump-with-where-clause-is-not-working
 									實際測試會動語法:
 										mysqldump.exe -h127.0.0.1 -P3307 -uroot -pusbw -t -e -q --complete-insert --extended-insert=FALSE --default-character-set=utf8 --hex-blob v8_workstation controller_io_record --where="537811566<= timestamp AND timestamp<=574445166" > controller_io_record_00.sql
 										mysqldump.exe -h127.0.0.1 -P3307 -uroot -pusbw -t -e -q --complete-insert --extended-insert=FALSE --default-character-set=utf8 --hex-blob v8_workstation controller_io_record --where="546955202<= timestamp AND timestamp<=571255622" > controller_io_record_01.sql
-										pause
-									
-								APB管理要能指定SYDM
+										pause	
+								APB管理要分成SYDM/SYCG兩種模式
 								授權多一狀態 是否已傳送
+								DB IP/DB PORT 文字修改	
 								區域要有階層特性，左側DOOR要能停用
-								控制器為TCP SERVER要顯示為預設								
-								DB IP/DB PORT 文字修改							
+								控制器為TCP SERVER要顯示為預設																	
 								進階門區的設定UI新增								
 								人員工號改必填
 								二代證專用機串接
