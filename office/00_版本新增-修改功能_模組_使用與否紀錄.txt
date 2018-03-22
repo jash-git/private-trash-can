@@ -578,9 +578,35 @@ APB管理要分成SYDM/SYCG兩種模式[100%]
 替換MYSQL的EXE-mysql.exe、mysqldump.exe為了能在XP上執行[100%]
 修正BUG-get_show_Controllers必須支援系統頁面的操作模式選項[100%]
 修正BUG-無法顯示門區設定(增加access_den值)[100%]
-								
+
+2018/03/22		0.1.8.1			01.人員工號改必填『○』
+									增加必填星號標記
+									增加必填防呆偵測
+								02.指紋整合『○』
+									DB整合
+										CREATE TABLE IF NOT EXISTS `fingerprint_type` (
+										  `uid` int(11) NOT NULL AUTO_INCREMENT,
+										  `Name` text,
+										  PRIMARY KEY (`uid`)
+										) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+										CREATE TABLE IF NOT EXISTS `fingerprint_list` (
+										  `uid` int(11) NOT NULL AUTO_INCREMENT,
+										  `PL_uid` int(11) DEFAULT NULL,
+										  `CL_uid` int(11) DEFAULT NULL,
+										  `FT_uid` int(11) DEFAULT NULL,
+										  `Data` text,
+										  PRIMARY KEY (`uid`)
+										) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;	
+										getfingerprint_type();//匯入fingerprint_type
+									新增主頁籤(子Sub0400、Sub0401)
+										啟用主功能表-指紋管理
+										啟用子功能表-指紋管理
+
 								指紋整合
-								人員工號改必填	
+									把原本城市內的UI變數更名並且且重新測試
+									新增子頁籤
+									CP元件+程式碼		
 								授權多一狀態 是否已傳送
 								區域要有階層特性，左側DOOR要能停用											
 								進階門區的設定UI新增
