@@ -602,9 +602,41 @@ APB管理要分成SYDM/SYCG兩種模式[100%]
 									新增主頁籤(子Sub0400、Sub0401)
 										啟用主功能表-指紋管理
 										啟用子功能表-指紋管理
-
+								03.修改門區設定值未啟用時的抓取運算規則，而非停用「Sub000100_getUIValue」『○』『●』
+								
+2018/03/22		0.1.8.2			01.修正當SYCG沒插KEY時雖然API會有回應，但是回應內容會是亂碼非JSON格式，導致系統死當問題『○』『●』
+--------------------------------輸出Workstation[SYCG]-V0182.exe
+--------------------------------輸出Workstation[SYDM]-V0182.exe
+2018/03/23		0.1.8.3			01.把系統設定的模式元件改成只純顯示
+								02.把下載報表資訊的指定時間元件切開
+								03.換ICON
+								04.連線狀態元件換成純文字顯示
+								05.APB和門區 群組 UI 元件擺放修改							
+--------------------------------輸出Workstation[SYCG]-V0183.exe
+								
+2018/03/24		0.1.8.4			01.修正APB下方頁籤文字載入錯誤『○』『●』
+								02.調整報表元件結束時間為23:59『○』
+--------------------------------輸出Workstation[SYCG]-V0184.exe								
+								03.撰寫獨立的縮圖程式CS_cmd_ImageResize準備整合測試
+								
+2018/03/26		0.1.8.5			01.整合縮圖函數『○』『●』
+								02.將設定檔變成語系檔內容『○』『●』
+									card_type.set
+									fingerprint_type.set
+									Models.set
+									record_status.set
+								
+								
+								"SELECT id FROM card WHERE (type>0) AND (id NOT IN (SELECT card_id AS id FROM card_for_user_car) );"
+								USER 欄位增加
+									username		varchar(255)	utf8_unicode_ci		not null
+									password		longtext	utf8_unicode_ci   		not null
+									auth_group_id	int(11)					 			2
+									del	            int(11)								0
+								USER CSV匯出/匯入功能修改
+								USER DB匯出/匯入功能修改
 								指紋整合
-									把原本城市內的UI變數更名並且且重新測試
+									把原本程式內的UI變數更名並且重新測試
 									新增子頁籤
 									CP元件+程式碼		
 								授權多一狀態 是否已傳送
