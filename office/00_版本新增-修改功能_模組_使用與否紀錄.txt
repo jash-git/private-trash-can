@@ -626,15 +626,26 @@ APB管理要分成SYDM/SYCG兩種模式[100%]
 									Models.set
 									record_status.set
 								
+2018/03/27		0.1.8.6			01.修改「將設定檔變成語系檔內容」分割符號從「;」變「$」『○』『●』
+								02.解決卡片列表過濾條件失效問題『修正卡片資料-每次顯示列表時把已經被領用過的卡片資料變回預設值』『○』
+									"SELECT id FROM card WHERE (type>0) AND (id NOT IN (SELECT card_id AS id FROM card_for_user_car) );"
 								
-								"SELECT id FROM card WHERE (type>0) AND (id NOT IN (SELECT card_id AS id FROM card_for_user_car) );"
+				0.1.8.7			03.控制器過濾器要有作用『○』『●』
+								04.停用-解決卡片列表過濾條件失效問題『修正卡片資料-每次顯示列表時把已經被領用過的卡片資料變回預設值』『○』
+								05.解決卡片列表過濾條件失效問題『○』
+								06.修改報表元件標題『○』
+								
 								USER 欄位增加
-									username		varchar(255)	utf8_unicode_ci		not null
-									password		longtext	utf8_unicode_ci   		not null
+									username		varchar(255)	utf8_unicode_ci		not null [工號值]
+									password		longtext	utf8_unicode_ci   		not null [Base64(MD5(工號值))]
 									auth_group_id	int(11)					 			2
 									del	            int(11)								0
-								USER CSV匯出/匯入功能修改
-								USER DB匯出/匯入功能修改
+									USER CSV匯出/匯入功能修改
+									USER DB匯出/匯入功能修改
+									USER 身分證號不用必填
+									USER 必要[工號/姓名]欄位判斷不能重複
+								Car必要[車牌]欄位判斷不能重複
+								人員列表增加一個欄位，是否有領用卡片
 								指紋整合
 									把原本程式內的UI變數更名並且重新測試
 									新增子頁籤
