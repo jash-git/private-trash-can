@@ -683,18 +683,18 @@ APB管理要分成SYDM/SYCG兩種模式[100%]
 								07.新建授權紀錄時，預設"不勾選授權參數啟用"、"授權群組頁面縮起"『○』
 								
 2018/04/09		0.1.9.1			01.按照政樟要求修改繁體中文版的語系檔『○』『●』
-								02.指紋整合『○』
+								02.指紋整合
 									把指紋機型號(FD_model.set)寫入資料庫中(FD_models)
 									新增抓取指紋子頁籤
 										預設隱藏頁籤
-								03.在m_tabSub0400貼上對應UI元件『○』
-								04.修正指紋功能只在非Delta下啟用『○』
+								03.在m_tabSub0400貼上對應UI元件
+								04.修正指紋功能只在非Delta下啟用
 								05.FingerprintSQL2UI_DataStruct.cs
 									包含:class Combo_SQLite_Date
 									包含:class Fingerprint_SQLite_Date
 								06.CP指紋相關的全域變數+相關運算函數	
 								
-2018/04/10		0.1.9.1			01.防止匯入控制器時，未在線的控制器SN太長導致SN都相同『○』『●』
+2018/04/10		0.1.9.1			01.修正防止匯入控制器時，未在線的控制器SN太長導致SN都相同BUG『○』『●』
 								02.指紋相關的全域變數初始化
 								03.整合顯示指紋內碼的UI-Fingerprint.cs
 								04.抓取指紋的UI元件內資料設定
@@ -712,8 +712,8 @@ APB管理要分成SYDM/SYCG兩種模式[100%]
 --------------------------------輸出Delta TOOL								
 								
 2018/04/12		0.1.9.1			01.查小郭用V1090-SYDM 為何新增單們控制器會顯示斷線問題(小郭用副總工具連線正常)
-									-我請小郭用Insomnia呼叫 SYDM API 的 Get Controller Status 中 "is_connected": 0 ，所以再轉請羅哥接手處理
-								02.指紋抓取整合『○』
+									-我請小郭用Insomnia呼叫 SYDM API 的 Get Controller Status 中 "is_connected": 0 ，所以再轉請羅哥接手處理，最後副總修改韌體
+								02.指紋抓取整合[只在SYCG模式下啟用該功能]『○』
 									調整UI對期
 									抓取指紋UI多國語系製作
 									呼叫抓取指紋EXE
@@ -723,8 +723,42 @@ APB管理要分成SYDM/SYCG兩種模式[100%]
 								05.修正新增區域的對話盒沒有多國語系BUG『○』『●』
 								06.修正新增區域的對話盒沒有多國語系BUG『○』
 								
+2018/04/13		0.1.9.1			01.確認只有在SYCG模式才能有DB匯入匯出和報表功能+指紋功能『○』
+--------------------------------輸出Workstation[SYCG]-V0191.exe
+--------------------------------輸出Workstation[SYDM]-V0191.exe
+								02.指紋指令整理
+									//STX       MSG LEN         FLAGS       COMMAND			指紋編號			TYPE			Reserve			UID			Template
+									//1 Byte    2 Byte          2 Byte      2 Byte 			4BYTE				2BYTE			2BYTE			8BYTE
+									0x05		XXXX			0x800x00	0x060x11		
+								
+2018/04/15		0.1.9.2			01.檔案描述加上版號資訊『○』『●』
+								02.隱藏SYCG燈號『○』
+								03.在V0191來除錯為何連線到政璋WINDOWS SYCG[192.168.1.61] 可以抓到控制器狀態卻無法執行授權
+									●開DEBUG模式來記錄授權 API呼叫過程與結果
+										API回傳結果:
+											{"detachment_total_counter":1,"detachment_failed_counter":0}
+											{"identifier":1,"message":{"detachment_total_counter":1,"detachment_failed_counter":0}}
+											{"identifier":1,"message":{"identifier":1,"card_unique_identifier":"0000368911450628","door_accessable_flags":1,"result":2}}
+											{"identifier":1,"message":{"result":1}}
+											{"identifier":1,"result":0}
+											{"result":0}
+										傳送內容:
+											{"sydms": [{"identifier": 1,"command": 122,"message":{"authorizations":[{"identifier":1,"door_accessable_flags":1,"card_unique_identifier":"0000368911450628","apb_enabled":1,"apb_level_value":1,"display_text":"車票","pin_code":"FFFFFFFFFFFFFFFF","valid_start_timestamp":567561600,"valid_endle_timestamp":2145916800,"floor_flags_list":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"authorized_configuration_list":[{"card_type":1,"card_level":1,"card_in_black":0,"card_disabled":0,"week_plan_flags":127,"time_range_list":[{"start_timestamp":0,"endle_timestamp":86340},{"start_timestamp":0,"endle_timestamp":0},{"start_timestamp":0,"endle_timestamp":0}]}]}]}}]}									
+									●問羅哥為何會回傳2
+										0=GRAP_STATUS_SUCCEEDED, / 成功 /  
+										1=GRAP_STATUS_FAILED, / 失敗 /  
+										2=GRAP_STATUS_LOCKED, / 鎖定 /  
+										3=GRAP_STATUS_LIMIT_VIOLATIONS, / 違反 keypro 限制 /
+									●結論:
+										SYCG/SYDM 的DB(SQLITE) 無法工作，排除後就正常了
+								04.把繁體語系檔替成政璋提供的版本(2018/04/16 16:01)『○』『●』
+								05.修正授權記錄查詢門區等級有問題『○』
+								06.原本設計如果傳送授權失敗不記錄傳送內容，現在要改成都要記錄下來授權的JSON，錯誤的在後面加上-ERROR『○』
+								07.調整人員OUTLOOK選單的排列位置=部、人、卡、車、群『○』
+								08.調整人員工作區選單的排列位置=部、人、卡、車、群『○』
 								
 								
+								任意刪除卡片會造成要授權時出現GG-目前只能在授權時檢查(要提醒小郭是否要再做其他考慮)
 								指紋整合
 									透過API抓取並記錄有連接指紋讀的控制器
 									透過API把指紋傳入控制器
