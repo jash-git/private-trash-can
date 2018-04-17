@@ -731,7 +731,7 @@ APB管理要分成SYDM/SYCG兩種模式[100%]
 									//1 Byte    2 Byte          2 Byte      2 Byte 			4BYTE				2BYTE			2BYTE			8BYTE
 									0x05		XXXX			0x800x00	0x060x11		
 								
-2018/04/15		0.1.9.2			01.檔案描述加上版號資訊『○』『●』
+2018/04/16		0.1.9.2			01.檔案描述加上版號資訊『○』『●』
 								02.隱藏SYCG燈號『○』
 								03.在V0191來除錯為何連線到政璋WINDOWS SYCG[192.168.1.61] 可以抓到控制器狀態卻無法執行授權
 									●開DEBUG模式來記錄授權 API呼叫過程與結果
@@ -752,25 +752,47 @@ APB管理要分成SYDM/SYCG兩種模式[100%]
 									●結論:
 										SYCG/SYDM 的DB(SQLITE) 無法工作，排除後就正常了
 								04.把繁體語系檔替成政璋提供的版本(2018/04/16 16:01)『○』『●』
-								05.修正授權記錄查詢門區等級有問題『○』
+								05.修正『檢視授權紀錄的門區通行等級顯示錯誤』BUG『○』
 								06.原本設計如果傳送授權失敗不記錄傳送內容，現在要改成都要記錄下來授權的JSON，錯誤的在後面加上-ERROR『○』
 								07.調整人員OUTLOOK選單的排列位置=部、人、卡、車、群『○』
 								08.調整人員工作區選單的排列位置=部、人、卡、車、群『○』
 								
+2018/04/17		0.1.9.2			01.修正『建立新部門，下拉無新的選項』BUG『○』
+								02.修正『輸入重複的卡片內碼，系統僅會顯示紅色字體，應要顯示"重複卡片"提示』BUG『○』
+								03.修正『設置卡片，取消勾選時段 2 及時段3，儲存後再進入該張卡片。時段 2 及時段3 還是會勾選』BUG『○』『●』
+								04.修正『相同卡號可重複匯入』BUG『○』
+								05.修正『車輛資料管理其中配發卡片的部分，把所有未使用卡片都列出來』BUG『○』
+								06.修正『門區授權內容 授權起始日、撤銷日欄位刪除』『○』
+								
+								
+								
+								
+								
+								在時段14:28時刷卡，DO部會開啟5秒後關閉，在14:29時才會再度常開到14:30後關閉
+								
+								MySQL SQL查詢語法太複雜(寫太爛)導致系統無法負荷的錯誤訊息 [Fatal error: Maximum execution time of 300 seconds exceeded]
+									SELECT u.id AS id,u.emp_no AS jobnum,u.security_id AS s_id,u.name AS name, d.name AS dname,u.attribute AS attribute,u.birthday AS birthday,(SELECT COUNT(*) FROM card_for_user_car WHERE card_for_user_car.user_id=u.id) AS card_count FROM user AS u LEFT JOIN department_detail AS d_d ON ((u.id=d_d.user_id) AND ((d_d.car_id IS NULL) OR (d_d.car_id <1))) LEFT JOIN department AS d ON (d_d.dep_id=d.id) ORDER BY u.id;
+									SELECT id AS uid,name AS C_name FROM user WHERE id IN (SELECT user_id AS id FROM department_detail WHERE (car_id IS NULL) AND dep_id=0 ORDER BY user_id);
+									部門編輯也可能要修改	
 								
 								任意刪除卡片會造成要授權時出現GG-目前只能在授權時檢查(要提醒小郭是否要再做其他考慮)
+								
 								指紋整合
 									透過API抓取並記錄有連接指紋讀的控制器
 									透過API把指紋傳入控制器
-									
+	
 								傳送作業整個重作
+								
 								授權多一狀態 是否已傳送
+								
 								區域要有階層特性，左側DOOR要能停用											
+								
 								進階門區的設定UI新增
+								
 								二代證專用機串接
 								
-								
 								修正匯入控制器門數啟用數量要和SYDM一致
+								
 								datagridview欄位自動調整縮放 dgvSub0000_01.Columns[X].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
 			
 
