@@ -776,20 +776,44 @@ APB管理要分成SYDM/SYCG兩種模式[100%]
 2018/04/20		0.1.9.3			目前用 httpwebrequest或者libcurl 執行https://192.168.1.68:1111都會失敗或無反應
 								使用curl.exe -k https://192.168.1.68:1111會正常
 								
-								MySQL SQL查詢語法太複雜(寫太爛)導致系統無法負荷的錯誤訊息 [Fatal error: Maximum execution time of 300 seconds exceeded]
+2018/04/23		0.1.9.3			01.修正新增區域讀取語系檔BUG『○』『●』					
+								02.MySQL SQL查詢語法太複雜(寫太爛)導致系統無法負荷的錯誤訊息 [Fatal error: Maximum execution time of 300 seconds exceeded]『○』
 									SELECT u.id AS id,u.emp_no AS jobnum,u.security_id AS s_id,u.name AS name, d.name AS dname,u.attribute AS attribute,u.birthday AS birthday,(SELECT COUNT(*) FROM card_for_user_car WHERE card_for_user_car.user_id=u.id) AS card_count FROM user AS u LEFT JOIN department_detail AS d_d ON ((u.id=d_d.user_id) AND ((d_d.car_id IS NULL) OR (d_d.car_id <1))) LEFT JOIN department AS d ON (d_d.dep_id=d.id) ORDER BY u.id;
-									SELECT id AS uid,name AS C_name FROM user WHERE id IN (SELECT user_id AS id FROM department_detail WHERE (car_id IS NULL) AND dep_id=0 ORDER BY user_id);
+									SELECT id AS uid,name AS C_name FROM user WHERE id IN (SELECT user_id AS id FROM department_detail WHERE (car_id IS NULL) AND dep_id=-1 ORDER BY user_id);
 									部門編輯也可能要修改
-
+									------------------------
 									SELECT u.id AS id,u.emp_no AS jobnum,u.security_id AS s_id,u.name AS name,u.attribute AS attribute,u.birthday AS birthday,(SELECT COUNT(*) FROM card_for_user_car WHERE card_for_user_car.user_id=u.id) AS card_count FROM user AS u ,department_detail AS d_d,department AS d WHERE ((u.id=d_d.user_id) AND ((d_d.car_id IS NULL) OR (d_d.car_id <1))) AND (d_d.dep_id=d.id) ORDER BY u.id;
-									SELECT id AS uid,name AS C_name FROM user AS u WHERE EXISTS (SELECT user_id AS id FROM department_detail AS d_d WHERE (u.id=d_d.user_id) AND (d_d.car_id IS NULL) AND d_d.dep_id=-1 ORDER BY d_d.user_id);
+									SELECT id AS uid,name AS C_name FROM user AS u WHERE EXISTS (SELECT user_id AS id FROM department_detail AS d_d WHERE (u.id=d_d.user_id) AND (d_d.car_id IS NULL) AND d_d.dep_id={0} ORDER BY d_d.user_id);
+								03.人員重複匯入防呆機制『○』
+								04.車輛重複匯入防呆機制『○』
+								05.閱讀SFM SDK文件筆記
+									●閱讀資料:
+										◎文件:SFM_SDK_Manual_V2.0_rev.pdf
+										◎程式:sfm-sdk-dotnet-1.0.6528.18296										
+									●連接方式:
+										從文件的P13和程式的result = SFM.UF_InitCommPort("COM3", 19200, false);只有RS232方式
+									●是否有抓到設備
+										從文件的P13					
+									●UniFingerUI有提供完整的專案原始碼
+										從文件的P13
+										1.3.2. Compilation
+											Open UniFingerUI\UniFingerUI.dsw in Microsoft Visual C++ 6.0 or later. If you download and install HTML Help Workshop, changes the include directory and library path accordingly. If you don’t want online help, just select ‘Win32 Debug without Help’ or ‘Win32 Release without Help’ as the active configuration.								
+								06.抓取 suprema fingerprint scanner 驅動程式(並且正確驅動設備)
+									https://www.supremainc.com/en/content/biostar-1-usbsdk-driver-package
+										https://www.supremainc.com/sites/default/files/biostar1_drivers_0_0_0.zip
+								
+								
+								問政彰那台指紋機抓取指紋使用方法(因為目前設備區鄧程式正常之後部不會出現COM PORT)
+								修改指紋機列表匯入程式
+								人員匯入/匯出CSV功能將[username,password,auth_group_id,del]欄位剔除
+								人員匯入改成執行序模式
+								
+								指紋傳送
+									先判斷確定是TYPE B的單門設備
+									透過直通指令直接傳送
 								
 								任意刪除卡片會造成要授權時出現GG-目前只能在授權時檢查(要提醒小郭是否要再做其他考慮)
 								
-								指紋整合
-									透過API抓取並記錄有連接指紋讀的控制器
-									透過API把指紋傳入控制器
-	
 								傳送作業整個重作
 								
 								授權多一狀態 是否已傳送
