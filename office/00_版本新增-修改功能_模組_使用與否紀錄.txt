@@ -802,11 +802,14 @@ APB管理要分成SYDM/SYCG兩種模式[100%]
 									https://www.supremainc.com/en/content/biostar-1-usbsdk-driver-package
 										https://www.supremainc.com/sites/default/files/biostar1_drivers_0_0_0.zip
 								
+2018/04/24		0.1.9.3			01.人員匯入/匯出CSV功能將[username,password,auth_group_id,del]欄位剔除『○』
+								02.人員匯入改成執行緒模式『○』
+								03.問政璋那台指紋機抓取指紋使用方法(因為目前設備驅動程式正常之後部不會出現COM PORT)
+									結論- 請政璋幫我跟原廠拿UFScanner.dll、UFScanner.lib的SDK資料+.NET範例
+								04.20180424指紋SQL.txt
 								
-								問政彰那台指紋機抓取指紋使用方法(因為目前設備區鄧程式正常之後部不會出現COM PORT)
 								修改指紋機列表匯入程式
-								人員匯入/匯出CSV功能將[username,password,auth_group_id,del]欄位剔除
-								人員匯入改成執行序模式
+								
 								
 								指紋傳送
 									先判斷確定是TYPE B的單門設備
