@@ -941,8 +941,60 @@ APB管理要分成SYDM/SYCG兩種模式[100%]
 										UI變化紀錄『○』
 										DB關聯(載入時)『○』
 										DB關聯(寫入時)『○』
+				9000枚(TYPE_A)指紋程式整合
+					把UI顯示位置調到螢幕正中央
+					設定UI一定是TOP
+					撰寫sysUninit函數
+					改寫抓取指紋，增加配合TIMER的前置作業 ~ [停用Timer -> sysUninit -> sysInit -> 原本抓指紋]
+					停用抓取指紋需要輸入指紋ID的程式碼
+					可以抓取特徵了
+				
 
-								9000枚指紋程式整合
+----------------				
+				9000枚特徵馬長度不一致~相關整理		[都不固定為384]								
+					TEMPLATE相關參數
+						PDF-	UFM_TEMPLATE_TYPE
+						code-	const int MAX_TEMPLATE_SIZE = 1024;
+								switch (this.cbScanTemplateType.SelectedIndex)
+								{
+									case 0:
+										Scanner.nTemplateType = 2001;
+										break;
+									case 1:
+										Scanner.nTemplateType = 2002;
+										break;
+									case 2:
+										Scanner.nTemplateType = 2003;
+										break;
+								}									
+					BCB-sample資訊
+						TEMPLATE_SIZE :384
+							code:
+								value = 384;
+								UFS_SetParameter(hScanner, UFS_PARAM_TEMPLATE_SIZE, &value);      //UFE_PARAM_TEMPLATE_SIZE  302
+								value = -1;
+								UFS_GetParameter(hScanner, UFS_PARAM_TEMPLATE_SIZE, &value);
+								Memo1->Lines->Add("TEMPLATE_SIZE :" + IntToStr(value));							
+						TemplateType : suprema template type
+							code:
+								int TemplateType = 2001;
+								UFS_SetTemplateType(hScanner, TemplateType);  //UFS_TEMPLATE_TYPE_SUPREMA     2001  suprema template type
+																			  //UFS_TEMPLATE_TYPE_ISO19794_2  2002  ISO template type
+																			  //UFS_TEMPLATE_TYPE_ANSI378     2003  ANSI378 template type
+								UFS_GetTemplateType(hScanner, &TemplateType);
+								if( TemplateType==2001 ){
+									Memo1->Lines->Add("TemplateType : suprema template type");
+								}
+								else if( TemplateType==2002 ){
+									Memo1->Lines->Add("TemplateType : ISO template type");
+								}
+								else if( TemplateType==2003 ){
+									Memo1->Lines->Add("TemplateType : ANSI378 template type");
+								}
+								else {
+									Memo1->Lines->Add("TemplateType :" + IntToStr(TemplateType));
+								}
+						
 								抓取指紋UI要改成能允許20枚(各10枚)
 								重新整理傳送授權(提升速度)
 									
