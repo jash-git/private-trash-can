@@ -949,11 +949,11 @@ APB管理要分成SYDM/SYCG兩種模式[100%]
 					停用抓取指紋需要輸入指紋ID的程式碼
 					可以抓取特徵了
 				
-
-----------------				
-				9000枚特徵馬長度不一致~相關整理		[都不固定為384]								
-					TEMPLATE相關參數
+2018/05/17		9000枚特徵馬長度不一致~相關整理		[都不固定為384]								
+					C#TEMPLATE相關參數
 						PDF-	UFM_TEMPLATE_TYPE
+								P52~ UFS_PARAM_TEMPLATE_SIZE 302 Template size (byte unit) (256 ~ 1024, 32 bytes step size) 1024
+								[C# 沒有UFS_SetParameter函數，只有C++和JAVA 才有]
 						code-	const int MAX_TEMPLATE_SIZE = 1024;
 								switch (this.cbScanTemplateType.SelectedIndex)
 								{
@@ -996,7 +996,12 @@ APB管理要分成SYDM/SYCG兩種模式[100%]
 								}
 						
 								抓取指紋UI要改成能允許20枚(各10枚)
-								重新整理傳送授權(提升速度)
+								車輛管理，駕駛下拉選單無空白欄位
+								控制器在SERVER mode 時 SN 自動填入 日+時+分+秒
+								SYDM管理頁面當原本資料對不上要能變成新增SYDM
+								重新整理傳送授權(提升速度)+進度顯示
+								
+								
 									
 
 								
