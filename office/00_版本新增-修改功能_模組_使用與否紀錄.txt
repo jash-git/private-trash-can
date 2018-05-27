@@ -1045,8 +1045,24 @@ APB管理要分成SYDM/SYCG兩種模式[100%]
 						調整顯示元件大小+位置
 						新增離開按鈕
 						
+2018/05/25		suprema 指紋機程式[100%]
+					擷取異常也要跳出錯誤訊息+關閉程式「完成」
+					重整GUI
+						調整UI大小「完成」
+						調整顯示元件大小+位置「完成」
+						新增離開按鈕「完成」						
 						
-						
+2018/05/24		0.2.0.1		整合suprema指紋機程式『○』
+							指紋程式修改思路追查
+								●m_ALFingerprint
+									m_ALFingerprint.Add(FSD);
+								●m_intFingerprintuid
+									public int[] m_intFingerprintuid = new int[10];
+									//---
+									m_intFingerprintCount = Int32.Parse(DataReader1["FT_uid"].ToString()) - 1;
+									m_StrFingerprintData[m_intFingerprintCount] = DataReader1["Data"].ToString();
+									m_intFingerprintuid[m_intFingerprintCount] = Int32.Parse(DataReader1["uid"].ToString());
+
 
 								重新整理傳送授權(提升速度)+進度顯示
 									把呼叫SYDM_GET_CONTROLLER_CONNECTION 次數=卡數，變成只做一次
